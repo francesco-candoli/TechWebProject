@@ -9,7 +9,7 @@ define('URL_SUBFOLDER', 'corso/');
 
 //DB Params
 define('DB_HOST', '127.0.0.1');
-define('DB_USER', 'spesagian');
-define('DB_PASS', 'apetuning1');
-define('DB_NAME', 'beb_fornitures');
+define('DB_USER', '');
+define('DB_PASS', '');
+define('DB_NAME', '');
 
