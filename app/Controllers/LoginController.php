@@ -34,7 +34,7 @@ class LoginController extends Controller
         }
 	}
 
-    public function logout(RouteCollection $route){
+    public function logout(RouteCollection $routes){
         if($this->authManager->login_check()){
             $this->authManager->logout();
             header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."");
