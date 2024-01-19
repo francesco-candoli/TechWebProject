@@ -2,7 +2,8 @@
 //site name
 define('SITE_NAME', 'your-site-name');
 
-//App Root
+define('PROTOCOL', 'http://');
+define('SERVER', 'localhost');
 define('APP_ROOT', dirname(dirname(__FILE__)));
 define('URL_ROOT', '/');
 define('URL_SUBFOLDER', 'ristoranti/TechWebProject/');

@@ -34,6 +34,7 @@ class UserService extends DatabaseService{
                  // Account disabilitato
                  // Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
                  return false;
+
               } else {
               if($user["password"] == $password) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
                  // Password corretta!            

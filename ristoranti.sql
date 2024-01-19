@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 18, 2024 alle 20:08
+-- Creato il: Gen 19, 2024 alle 12:13
 -- Versione del server: 10.4.11-MariaDB
 -- Versione PHP: 7.4.6
 
@@ -57,6 +57,28 @@ CREATE TABLE `like_actions` (
   `user_id` int(11) NOT NULL,
   `comment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `login_attempts`
+--
+
+CREATE TABLE `login_attempts` (
+  `user_id` int(11) NOT NULL,
+  `time` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dump dei dati per la tabella `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`user_id`, `time`) VALUES
+(1, '1705659822'),
+(1, '1705659880'),
+(1, '1705659940'),
+(1, '1705659942'),
+(1, '1705659960');
 
 -- --------------------------------------------------------
 
@@ -120,8 +142,16 @@ CREATE TABLE `user` (
   `username` varchar(50) NOT NULL,
   `password` varchar(512) NOT NULL,
   `age` int(11) NOT NULL,
-  `sex` char(1) NOT NULL
+  `sex` char(1) NOT NULL,
+  `salt` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dump dei dati per la tabella `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `password`, `age`, `sex`, `salt`) VALUES
+(1, 'test_user', 'a07083acd458db60b73fb9c54a27ad9dcf894cdddea74b1a8683279d6f0f94c6771417736dba549de3a4026b62ee464b5e4bb48c8c2a3d188f9e286a3f9eb286', 807432, 'f', 'f9aab579fc1b41ed0c44fe4ecdbfcdb4cb99b9023abb241a6db833288f4eea3c02f76e0d35204a8695077dcf81932aa59006423976224be0390395bae152d4ef');
 
 --
 -- Indici per le tabelle scaricate
@@ -234,7 +264,7 @@ ALTER TABLE `review`
 -- AUTO_INCREMENT per la tabella `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Limiti per le tabelle scaricate

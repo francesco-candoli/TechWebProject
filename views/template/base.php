@@ -38,7 +38,7 @@
         </div>
       </div>
     </nav>
-
+    <h2><?php echo $data["message"] ?></h2>
     <main>
       <!--Profilo-->
       <div class="container col-12 col-sm-6">
