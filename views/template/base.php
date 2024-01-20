@@ -118,7 +118,18 @@
             </div>
           </div>
         <?php endforeach; ?>
-      <?php endif; ?>       
+      <?php endif; ?> 
+      
+      <!--Form Recensione-->
+      <?php if(isset($form)):?>
+        <div class="container col-12 col-sm-6 p-0">
+            <div class="justify-content-sm-center my-1">
+              <div class="border border-black p-4">
+                  <p><?php echo $form ; ?></p>
+              </div>  
+            </div>
+          </div>
+        <?php endif;?>
           
     </main>
 
