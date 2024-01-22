@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\HasNotification;
 use App\Authentication\Session;
 
 class UserService extends DatabaseService
@@ -96,6 +97,17 @@ class UserService extends DatabaseService
       }
    }
 
+   public function findNotificationByUserId(int $id)
+   {
+      $stmt = $this->connection->prepare("SELECT * FROM has_notification WHERE user_id=?");
+      $stmt->execute([$id]);
+      $hasNot = $stmt->fetch();
+      for($i=0; $i<count($hasNot); $i++)
+      { 
+        $hasNotification[$i] = new HasNotification($hasNot[$i]["id"], $hasNot[$i]["user_id"], $hasNot[$i]["notification_id"]);
+      }
 
+      return $hasNotification;
+   }
 
 }
