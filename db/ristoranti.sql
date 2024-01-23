@@ -55,7 +55,7 @@ CREATE TABLE `has_notification` (
 CREATE TABLE `like_actions` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `comment_id` int(11) NOT NULL
+  `review_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -146,6 +146,17 @@ CREATE TABLE `user` (
   `salt` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `follow`
+--
+
+CREATE TABLE `follow` (
+  `following_user_id` int(11) NOT NULL,
+  `followed_user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Dump dei dati per la tabella `user`
 --
@@ -179,7 +190,7 @@ ALTER TABLE `has_notification`
 ALTER TABLE `like_actions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `comment_id` (`comment_id`);
+  ADD KEY `review_id` (`review_id`);
 
 --
 -- Indici per le tabelle `notification`
@@ -213,6 +224,12 @@ ALTER TABLE `review`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indici per le tabelle `followe`
+--
+ALTER TABLE `follow`
+  ADD PRIMARY KEY (`following_user_id`,`followed_user_id`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
@@ -289,7 +306,7 @@ ALTER TABLE `has_notification`
 --
 ALTER TABLE `like_actions`
   ADD CONSTRAINT `like_actions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `like_actions_ibfk_2` FOREIGN KEY (`comment_id`) REFERENCES `comment` (`id`);
+  ADD CONSTRAINT `like_actions_ibfk_2` FOREIGN KEY (`review_id`) REFERENCES `review` (`id`);
 
 --
 -- Limiti per la tabella `photo`
@@ -303,7 +320,16 @@ ALTER TABLE `photo`
 ALTER TABLE `review`
   ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`),
   ADD CONSTRAINT `review_ibfk_2` FOREIGN KEY (`publisher_id`) REFERENCES `user` (`id`);
+
+--
+-- Limiti per la tabella `follow`
+--
+ALTER TABLE `follow`
+  ADD CONSTRAINT `follow_ibfk_1` FOREIGN KEY (`following_user_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `follow_ibfk_2` FOREIGN KEY (`followed_user_id`) REFERENCES `user` (`id`);
 COMMIT;
+
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -97,11 +97,16 @@ class UserService extends DatabaseService
       }
    }
 
-   public function findNotificationByUserId(int $id)
+   public function findHasNotificationByUserId(int $id)
    {
       $stmt = $this->connection->prepare("SELECT * FROM has_notification WHERE user_id=?");
       $stmt->execute([$id]);
       $hasNot = $stmt->fetch();
+
+      if($stmt->rowCount()==0){
+         return null;
+      }
+      
       for($i=0; $i<count($hasNot); $i++)
       { 
         $hasNotification[$i] = new HasNotification($hasNot[$i]["id"], $hasNot[$i]["user_id"], $hasNot[$i]["notification_id"]);
