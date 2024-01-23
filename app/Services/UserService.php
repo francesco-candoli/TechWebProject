@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\HasNotification;
+use App\Models\Follow;
 use App\Authentication\Session;
 
 class UserService extends DatabaseService
@@ -113,6 +114,24 @@ class UserService extends DatabaseService
       }
 
       return $hasNotification;
+   }
+
+   public function findFollowedByUserId($following_user_id){
+      $stmt = $this->connection->prepare("SELECT * FROM follow WHERE following_user_id=?");
+      $stmt->execute([$following_user_id]);
+
+      $follow = $stmt->fetch();
+
+      if($stmt->rowCount()==0){
+         return null;
+      }
+
+      for($i=0; $i<count($follow); $i++)
+      { 
+        $followed[$i] = new Follow($follow[$i]["following_user_id"], $follow[$i]["followed_user_id"]);
+      }
+
+      return $followed;
    }
 
 }
