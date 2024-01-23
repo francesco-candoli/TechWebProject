@@ -1,4 +1,5 @@
 <?php
+
 use App\Authentication\Session;
 
 ini_set('display_errors', '1');
@@ -12,6 +13,7 @@ require_once '../vendor/autoload.php';
 // Load Config
 require_once '../config/config.php';
 
+// Load session
 Session::sec_session_start();
 
 // Routes

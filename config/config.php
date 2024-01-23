@@ -15,4 +15,3 @@ define('DB_PASS', 'apetuning1');
 define('DB_NAME', 'ristoranti');
 
 $pdo = new PDO('mysql:host=localhost;dbname=ristoranti', DB_USER, DB_PASS);
-
