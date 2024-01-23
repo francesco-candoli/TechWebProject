@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Authentication\AuthenticationManager;
 use App\Services\UserService;
 use Symfony\Component\Routing\RouteCollection;
+use App\Models\Restaurant;
+use App\Services\RestaurantService;
 
 class TestController extends Controller
 {
@@ -14,10 +16,19 @@ class TestController extends Controller
         parent::__construct();
         $this->userService= new UserService();
     }
-    
-    public function index(string $codice)
+
+    public function index(RouteCollection $routes)
     {
-        echo $codice;
+
+
+        $service = new RestaurantService();
+
+        $restaurant = $service->findRestaurantById(1);
+
+        $restaurant->setName("TEST UPATE");
+
+        $service->save($restaurant);
+
     }
 
 

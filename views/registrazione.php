@@ -4,9 +4,6 @@ $form='<h2>Registrazione</h2>
     <hr>
     <div class="text-start">
     <form action="#" method="POST">
-        <label for="emailInput" class="form-label mt-2 mb-0">Indirizzo Email</label>
-        <input type="email" class="form-control" id="emailInput">
-
         <label for="nickname" class="form-label mt-2 mb-0">Nickname</label>
         <input type="text" class="form-control" id="nickname">
 
