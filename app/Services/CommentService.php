@@ -46,14 +46,4 @@ class CommentService extends DatabaseService
     }
     
    }
-
-   public function getLikeCount(Comment $comment){
-     $stmt= $this->connection->prepare("SELECT * FROM like_actions WHERE comment_id=?");
-
-     $stmt->execute([$comment->getId()]);
-
-     while($row=$stmt->fetch()){
-
-     }
-   }
 }
