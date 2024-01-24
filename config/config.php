@@ -10,8 +10,8 @@ define('URL_SUBFOLDER', 'ristoranti/TechWebProject/');
 
 //DB Params
 define('DB_HOST', '127.0.0.1');
-define('DB_USER', 'spesagian');
-define('DB_PASS', 'apetuning1');
+define('DB_USER', 'checco');
+define('DB_PASS', 'Password');
 define('DB_NAME', 'ristoranti');
 
 $pdo = new PDO('mysql:host=localhost;dbname=ristoranti', DB_USER, DB_PASS);

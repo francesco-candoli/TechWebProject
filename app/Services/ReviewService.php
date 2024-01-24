@@ -53,4 +53,15 @@ class ReviewService extends DatabaseService
 
 
    }
+
+   public function findLastRecent($quantity){
+    $stmt = $this->connection->prepare("SELECT * FROM review ORDER BY id DESC LIMIT ?;");
+      $stmt->execute([$quantity]);
+      $rev = $stmt->fetch();
+      for($i=0; $i<count($rev); $i++)
+      { 
+        $review[$i] = new Review($rev[$i]["id"],$rev[$i]["content"],$rev[$i]["vote"],$rev[$i]["restaurant_id"],$rev[$i]["publisher_id"]);
+      }
+      return $review;
+   }
 }

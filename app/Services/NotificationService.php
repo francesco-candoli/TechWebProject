@@ -23,8 +23,7 @@ class NotificationService extends DatabaseService
    }
 
    public function deleteNotificationById(int $id){
-      $stmt = $this->connection->prepare("DELECT * FROM notification WHERE id=?");
+      $stmt = $this->connection->prepare("DELETE FROM notification WHERE id=?");
       $stmt->execute([$id]);
-      return $stmt->fetch();
    }
 }

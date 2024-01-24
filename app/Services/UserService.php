@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\HasNotification;
+use App\Models\Follow;
 use App\Authentication\Session;
 
 class UserService extends DatabaseService
@@ -97,17 +98,40 @@ class UserService extends DatabaseService
       }
    }
 
-   public function findNotificationByUserId(int $id)
+   public function findHasNotificationByUserId(int $id)
    {
       $stmt = $this->connection->prepare("SELECT * FROM has_notification WHERE user_id=?");
       $stmt->execute([$id]);
       $hasNot = $stmt->fetch();
+
+      if($stmt->rowCount()==0){
+         return null;
+      }
+      
       for($i=0; $i<count($hasNot); $i++)
       { 
         $hasNotification[$i] = new HasNotification($hasNot[$i]["id"], $hasNot[$i]["user_id"], $hasNot[$i]["notification_id"]);
       }
 
       return $hasNotification;
+   }
+
+   public function findFollowedByUserId($following_user_id){
+      $stmt = $this->connection->prepare("SELECT * FROM follow WHERE following_user_id=?");
+      $stmt->execute([$following_user_id]);
+
+      $follow = $stmt->fetch();
+
+      if($stmt->rowCount()==0){
+         return null;
+      }
+
+      for($i=0; $i<count($follow); $i++)
+      { 
+        $followed[$i] = new Follow($follow[$i]["following_user_id"], $follow[$i]["followed_user_id"]);
+      }
+
+      return $followed;
    }
 
 }

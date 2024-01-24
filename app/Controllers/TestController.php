@@ -3,10 +3,11 @@
 namespace App\Controllers;
 
 use App\Authentication\AuthenticationManager;
+use App\Models\Photo;
+use App\Services\PhotoService;
 use App\Services\UserService;
 use Symfony\Component\Routing\RouteCollection;
 use App\Models\Restaurant;
-use App\Services\RestaurantService;
 
 class TestController extends Controller
 {
@@ -19,16 +20,7 @@ class TestController extends Controller
 
     public function index(RouteCollection $routes)
     {
-
-
-        $service = new RestaurantService();
-
-        $restaurant = $service->findRestaurantById(1);
-
-        $restaurant->setName("TEST UPATE");
-
-        $service->save($restaurant);
-
+        
     }
 
 
