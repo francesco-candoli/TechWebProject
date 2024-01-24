@@ -12,6 +12,7 @@ class NotificationService extends DatabaseService
    function __construct()
    {
       parent::__construct();
+
    }
 
    public function findNOtificationById(int $id)

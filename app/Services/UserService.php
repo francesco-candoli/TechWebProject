@@ -14,6 +14,7 @@ class UserService extends DatabaseService
    function __construct()
    {
       parent::__construct();
+
    }
    public function findUserById(int $id)
    {
@@ -22,6 +23,11 @@ class UserService extends DatabaseService
       $stmt = $this->connection->prepare("SELECT * FROM user WHERE id=?");
       $stmt->execute([$id]);
       $user = $stmt->fetch();
+
+      if($stmt->rowCount()==0){
+         return null;
+      }
+
       return new User($user["id"], $user["username"], $user["password"], $user["age"], $user["sex"], $user["salt"]);
    }
 
@@ -50,6 +56,7 @@ class UserService extends DatabaseService
             if ($this->checkbrute($user["id"]) == true) {
                // Account disabilitato
                // Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
+
                return false;
 
             } else {
@@ -62,17 +69,21 @@ class UserService extends DatabaseService
                   $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username); // ci proteggiamo da un attacco XSS
                   $_SESSION['username'] = $username;
                   $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
+
                   // Login eseguito con successo.
                   return true;
                } else {
+
                   // Password incorretta.
                   // Registriamo il tentativo fallito nel database.
                   $now = time();
                   $this->connection->query("INSERT INTO login_attempts (user_id, time) VALUES (" . $user["id"] . ", '$now')");
+
                   return false;
                }
             }
          } else {
+
             // L'utente inserito non esiste.
             return false;
          }
@@ -91,8 +102,10 @@ class UserService extends DatabaseService
 
          // Verifico l'esistenza di più di 5 tentativi di login falliti.
          if ($stmt->rowCount() > 5) {
+
             return true;
          } else {
+
             return false;
          }
       }
@@ -105,6 +118,7 @@ class UserService extends DatabaseService
       $hasNot = $stmt->fetch();
 
       if($stmt->rowCount()==0){
+
          return null;
       }
       
@@ -120,17 +134,21 @@ class UserService extends DatabaseService
       $stmt = $this->connection->prepare("SELECT * FROM follow WHERE following_user_id=?");
       $stmt->execute([$following_user_id]);
 
-      $follow = $stmt->fetch();
+      
 
       if($stmt->rowCount()==0){
+
          return null;
       }
 
-      for($i=0; $i<count($follow); $i++)
+      $i=0;
+      $followed=[];
+      while($follow = $stmt->fetch())
       { 
-        $followed[$i] = new Follow($follow[$i]["following_user_id"], $follow[$i]["followed_user_id"]);
+        $followed[$i] = $this->findUserById($follow["followed_user_id"]);
+        $i++;
       }
-
+  
       return $followed;
    }
 

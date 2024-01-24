@@ -38,7 +38,6 @@
         </div>
       </div>
     </nav>
-    <h2><?php echo $data["message"] ?></h2>
     <main>
       <!--Profilo-->
       <div class="container col-12 col-sm-6">
@@ -53,8 +52,8 @@
       </div>
 
       <!--Recensione-->
-      <?php if (isset($recensione)): ?>
-        <?php foreach($recensione as $post): ?>
+      <?php if (isset($recensioni)): ?>
+        <?php foreach($recensioni as $post): ?>
           <div class="container col-12 col-sm-6">
             <div class="justify-content-sm-center">
 
@@ -63,7 +62,7 @@
                 <!--header-->
                 <div class="card-header">
                   <img src="<?php echo $post["foto_profilo"]; ?>" class="rounded-circle col-2">
-                  <a href="#" class="text-decoration-none text-dark"><?php echo $post["nickname"]; ?></a>
+                  <a href="#" class="text-decoration-none text-dark"><?php echo $post["publisher"]->getUsername(); ?></a>
                 </div>
                 <img src="<?php echo $post["immagine"]; ?>" class="card-img-center" alt="...">
 
@@ -72,20 +71,22 @@
 
                   <!--recensione-->
                   <div class="text-center">
-                    <a href="#" class="text-decoration-none text-dark"><?php echo $post["ristorante_recensito"]; ?></a>
+                    <a href="#" class="text-decoration-none text-dark"><?php echo $post["restaurant"]->getName(); ?></a>
                   </div>
                   <div class="overflow-y-auto border border-black mb-2" style="max-height: 5em;">
-                    <p>Recensione: Al contrario di quanto si pensi, Lorem Ipsum non è semplicemente una sequenza casuale di caratteri. Risale ad un classico della letteratura latina del 45 AC, cosa che lo rende vecchio di 2000 anni.</p>
+                    <p>Recensione:<?php echo $post["review"]->getContent(); ?></p>
                   </div>
 
                   <!--commenti-->
-                  <?php if(isset ($post["commenti"])): ?>
+                  <?php if(isset ($post["comments"])): ?>
                     <div class="text-center">
                     <p class="btn btn-outline-primary">Commenti</p>
                     </div>
                     <div class="overflow-y-auto border border-black" style="max-height: 5em; display:block">
-                      <?php foreach($post["commenti"] as $commento): ?>
-                        <p class="my-0"><?php echo $commento; ?></p>
+                      <?php foreach($post["comments"] as $comment): ?>
+                        <p class="my-0"><?php echo $comment->getPublisherId(); ?></p>
+                        <p class="my-0"><?php echo $comment->getContent(); ?></p>
+                        <br>
                       <?php endforeach; ?>
                     </div>
                   <?php endif; ?>

@@ -9,6 +9,6 @@ class DatabaseService{
     protected $connection;
 
     function __construct(){
-        $this->connection= new PDO('mysql:host=localhost;dbname=ristoranti', DB_USER, DB_PASS);
+        $this->connection= new PDO('mysql:host=localhost;port=3307;dbname=ristoranti', DB_USER, DB_PASS);
     }
 }

@@ -4,82 +4,139 @@
 namespace App\Services;
 
 use App\Models\LikeActions;
+use App\Models\User;
 use App\Models\Review;
 use App\Services\CommentService;
+use App\Models\Comment;
 use App\Services\UserService;
 use App\Authentication\Session;
 
 class ReviewService extends DatabaseService
 {
 
-   function __construct()
-   {
-      parent::__construct();
-   }
+  private $commentService;
+  private $userService;
+  private $restaurantService;
 
-   public function findReviewById(int $id)
-   {
+  function __construct()
+  {
+    parent::__construct();
+    $this->commentService = new CommentService();
+    $this->userService = new UserService();
+    $this->restaurantService= new RestaurantService();
+  }
+
+  public function findReviewById(int $id)
+  {
     $stmt = $this->connection->prepare("SELECT * FROM review WHERE id=?");
     $stmt->execute([$id]);
-    $review= $stmt->fetch();
-    if($stmt->rowCount()==0){
-        return null;
+    $review = $stmt->fetch();
+    if ($stmt->rowCount() == 0) {
+
+      return null;
     }
+
     return new Review($review["id"], $review["content"], $review["vote"], $review["restaurant_id"], $review["publisher_id"]);
- 
-   }
 
-   private function insertReview(Review $review){
-    $stmt = $this->connection->prepare("INSERT INTO review (content, vote, restaurant_id, publisher_id) VALUES (?,?,?,?)")->execute([$review->getContent(), $review->getVote(), $review->getRestaurantId(), $review->getPublisherId()]);
-   }
+  }
 
-   private function updateReview(Review $review){
-    $stmt = $this->connection->prepare("UPDATE review SET content=?, vote=?, restaurant_id=?, publisher_id=? WHERE id=?")->execute([$review->getContent(), $review->getVote(), $review->getRestaurantId(), $review->getPublisherId(), $review->getId()]);
-   }
+  public function findByPublisher(User $publisher){
 
-   public function save(Review $review){
-    $res= $this->findReviewById($review->getId());
-    if($res==null){
-        $this->insertReview($review);
-    }else{
-        $this->updateReview($review);
-    }
     
-   }
+    $stmt = $this->connection->prepare("SELECT * FROM review WHERE publisher_id=?");
+    $stmt->execute([$publisher->getID()]);
+    
+    if ($stmt->rowCount() == 0) {
 
-   public function viewSerialize(Review $review){
-
-
-
-
-   }
-
-   public function findLastRecent($quantity){
-    $stmt = $this->connection->prepare("SELECT * FROM review ORDER BY id DESC LIMIT ?;");
-      $stmt->execute([$quantity]);
-      $row = $stmt->fetch();
-      
-      for($i=0; $i<count($row); $i++)
-      { 
-        $review[$i] = new Review($row[$i]["id"],$row[$i]["content"],$row[$i]["vote"],$row[$i]["restaurant_id"],$row[$i]["publisher_id"]);
-      }
-      return $review;
-   }
-
-   public function getLikeCount(Review $review){
-    $stmt= $this->connection->prepare("SELECT * FROM like_actions WHERE review_id=?");
-    $stmt->execute([$review->getId()]);
-    $row= $stmt->fetch();
-
-    if($stmt->rowCount()==0){
-        return null;
+      return null;
     }
 
-    for($i=0; $i<count($row); $i++)
-    { 
-      $like[$i] = new LikeActions($row[$i]["id"],$row[$i]["user_id"],$row[$i]["review_id"]);
+    $counter=0;
+    while($review = $stmt->fetch()){
+      $reviews[$counter]=new Review($review["id"], $review["content"], $review["vote"], $review["restaurant_id"], $review["publisher_id"]);
+    }
+
+    return $reviews;
+  }
+
+  private function insertReview(Review $review)
+  {
+    $stmt = $this->connection->prepare("INSERT INTO review (content, vote, restaurant_id, publisher_id) VALUES (?,?,?,?)")->execute([$review->getContent(), $review->getVote(), $review->getRestaurantId(), $review->getPublisherId()]);
+  }
+
+  private function updateReview(Review $review)
+  {
+    $stmt = $this->connection->prepare("UPDATE review SET content=?, vote=?, restaurant_id=?, publisher_id=? WHERE id=?")->execute([$review->getContent(), $review->getVote(), $review->getRestaurantId(), $review->getPublisherId(), $review->getId()]);
+  }
+
+  public function save(Review $review)
+  {
+    $res = $this->findReviewById($review->getId());
+    if ($res == null) {
+      $this->insertReview($review);
+    } else {
+      $this->updateReview($review);
+    }
+
+  }
+
+  public function viewSerialize(Review $review)
+  {
+
+    $data=[
+      'review' => $review,
+      'publisher' => $this->userService->findUserById($review->getPublisherId()),
+      'restaurant' => $this->restaurantService->findRestaurantById($review->getRestaurantId()),
+      'comments' => $this->findCommentsFromReview($review),
+      'likes' => $this->getLikeCount($review)
+    ];
+
+    return $data;
+  }
+
+  public function findLastRecent($quantity)
+  {
+    $stmt = $this->connection->prepare("SELECT * FROM review;");
+    $stmt->execute([$quantity]);
+    
+    $i=0;
+    $review=[];
+    while($row = $stmt->fetch()) {
+      $review[$i] = new Review($row["id"], $row["content"], $row["vote"], $row["restaurant_id"], $row["publisher_id"]);
+      $i++;
+    }
+    return $review;
+  }
+
+  public function getLikeCount(Review $review)
+  {
+    $stmt = $this->connection->prepare("SELECT * FROM like_actions WHERE review_id=?");
+    $stmt->execute([$review->getId()]);
+    
+
+    if ($stmt->rowCount() == 0) {
+      return null;
+    }
+    $i=0;
+    while($row = $stmt->fetch()) {
+      $like[$i] = $this->userService->findUserById($row["user_id"]);
+      $i++;
     }
     return $like;
-    
+
   }
+
+  public function findCommentsFromReview(Review $review){
+    $stmt= $this->connection->prepare("SELECT * FROM comment WHERE review_id=?");
+    $stmt->execute([$review->getId()]);
+    $counter=0;
+    $comments=[];
+    while($comment = $stmt->fetch()){
+        $comments[$counter]=new Comment($comment["id"], $comment["content"], $comment["review_id"], $comment["publisher_id"]);
+        $counter++;
+    }
+
+    return $comments;
+
+}
 }

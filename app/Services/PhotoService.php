@@ -12,6 +12,7 @@ class PhotoService extends DatabaseService
    function __construct()
    {
       parent::__construct();
+
    }
 
    public function findPhotoById(int $id)

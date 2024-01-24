@@ -4,24 +4,44 @@ namespace App\Controllers;
 
 
 use App\Authentication\AuthenticationManager;
+use App\Services\ReviewService;
+use App\Services\UserService;
 use Symfony\Component\Routing\RouteCollection;
 
 class HomeController extends Controller
 {
+	private $userService;
+	private $reviewService;
+
+
 	function __construct(){
 		parent::__construct();
+		$this->userService= new UserService();
+		$this->reviewService= new ReviewService();
 	}
     // Homepage action
 	public function indexAction(RouteCollection $routes)
 	{
-		
+		$counter=0;
 		if($this->authManager->login_check()){
-			$data = ['message'=>"l'utente è loggato"];
+			
+			$follows= $this->userService->findFollowedByUserId($_SESSION["user_id"]);
+			foreach($follows as $follow){
+				$reviews = $this->reviewService->findByPublisher($follow);
+				foreach($reviews as $review){
+					$recensioni[$counter]=$this->reviewService->viewSerialize($review);
+					$counter++;
+				}
+			}
 		}else{
-			$data = ['message'=>"l'utente non è loggato"];
+			$reviews = $this->reviewService->findLastRecent(2);
+
+				foreach($reviews as $review){
+					$recensioni[$counter]=$this->reviewService->viewSerialize($review);
+					$counter++;
+				}
 		}
         require_once APP_ROOT . '/views/home.php';
-        
 	}
 
   

@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Models\Comment;
+use App\Models\Review;
 use App\Services\UserService;
 use App\Authentication\Session;
 
@@ -11,9 +12,12 @@ class CommentService extends DatabaseService
 {
 
 
+
+
     function __construct()
     {
         parent::__construct();
+
     }
 
     public function findCommentById(int $id)
@@ -24,10 +28,13 @@ class CommentService extends DatabaseService
         if ($stmt->rowCount() == 0) {
             return null;
         }
+
         return new Comment($comment["id"], $comment["content"], $comment["review_id"], $comment["publisher_id"]);
 
 
     }
+
+ 
     
    
 }

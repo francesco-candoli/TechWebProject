@@ -9,9 +9,9 @@ define('URL_ROOT', '/');
 define('URL_SUBFOLDER', 'ristoranti/TechWebProject/');
 
 //DB Params
-define('DB_HOST', '127.0.0.1');
-define('DB_USER', 'checco');
-define('DB_PASS', 'Password');
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASS', '123456');
 define('DB_NAME', 'ristoranti');
 
-$pdo = new PDO('mysql:host=localhost;dbname=ristoranti', DB_USER, DB_PASS);
+$pdo = new PDO('mysql:host=localhost;port=3307;dbname=ristoranti', DB_USER, DB_PASS);
