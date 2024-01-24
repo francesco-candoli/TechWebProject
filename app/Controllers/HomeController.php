@@ -22,6 +22,7 @@ class HomeController extends Controller
     // Homepage action
 	public function indexAction(RouteCollection $routes)
 	{
+		$recensioni=[];
 		$counter=0;
 		if($this->authManager->login_check()){
 			
@@ -35,12 +36,15 @@ class HomeController extends Controller
 			}
 		}else{
 			$reviews = $this->reviewService->findLastRecent(2);
-
+	
 				foreach($reviews as $review){
 					$recensioni[$counter]=$this->reviewService->viewSerialize($review);
 					$counter++;
 				}
+			
+			
 		}
+
         require_once APP_ROOT . '/views/home.php';
 	}
 

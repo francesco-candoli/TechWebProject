@@ -39,6 +39,7 @@
       </div>
     </nav>
     <main>
+      <br/>
       <!--Profilo-->
       <div class="container col-12 col-sm-6">
         <div class="justify-content-sm-center">
@@ -61,10 +62,10 @@
 
                 <!--header-->
                 <div class="card-header">
-                  <img src="<?php echo $post["publisher"]->getProfileImageSrc(); ?>" class="rounded-circle col-2">
+                  <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$post["publisher"]->getProfileImageSrc(); ?>" class="rounded-circle col-2">
                   <a href="#" class="text-decoration-none text-dark"><?php echo $post["publisher"]->getUsername(); ?></a>
                 </div>
-                <img src="<?php echo REVIEW_IMAGE_PATH.$post["photo"]->getSrc(); ?>" class="card-img-center" alt="...">
+                <img src="" class="card-img-center" alt="...">
 
                 <!--body-->
                 <div class="card-body">
