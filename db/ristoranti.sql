@@ -141,6 +141,7 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(512) NOT NULL,
+  `profile_image_src` varchar(512) NOT NULL,
   `age` int(11) NOT NULL,
   `sex` char(1) NOT NULL,
   `salt` varchar(500) NOT NULL
@@ -161,8 +162,8 @@ CREATE TABLE `follow` (
 -- Dump dei dati per la tabella `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `age`, `sex`, `salt`) VALUES
-(1, 'test_user', 'a07083acd458db60b73fb9c54a27ad9dcf894cdddea74b1a8683279d6f0f94c6771417736dba549de3a4026b62ee464b5e4bb48c8c2a3d188f9e286a3f9eb286', 807432, 'f', 'f9aab579fc1b41ed0c44fe4ecdbfcdb4cb99b9023abb241a6db833288f4eea3c02f76e0d35204a8695077dcf81932aa59006423976224be0390395bae152d4ef');
+INSERT INTO `user` (`id`, `username`, `password`,`profile_image_src` ,`age`, `sex`, `salt`) VALUES
+(1, 'test_user', 'a07083acd458db60b73fb9c54a27ad9dcf894cdddea74b1a8683279d6f0f94c6771417736dba549de3a4026b62ee464b5e4bb48c8c2a3d188f9e286a3f9eb286','' , 807432, 'f', 'f9aab579fc1b41ed0c44fe4ecdbfcdb4cb99b9023abb241a6db833288f4eea3c02f76e0d35204a8695077dcf81932aa59006423976224be0390395bae152d4ef');
 
 --
 -- Indici per le tabelle scaricate

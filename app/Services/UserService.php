@@ -28,7 +28,7 @@ class UserService extends DatabaseService
          return null;
       }
 
-      return new User($user["id"], $user["username"], $user["password"], $user["age"], $user["sex"], $user["salt"]);
+      return new User($user["id"], $user["username"], $user["password"], $user["profile_image_src"], $user["age"], $user["sex"], $user["salt"]);
    }
 
    private function update(){

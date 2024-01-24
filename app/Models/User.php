@@ -6,14 +6,16 @@ class User{
     private int $id;
     private string $username;
     private string $password;
+    private string $profile_image_src;
     private int $age;
     private string $sex;
     private string $salt;
 
-    function __construct(int $id,string $username, string $password, int $age, string $sex, string $salt){
+    function __construct(int $id,string $username, string $password,string $profile_image_src ,int $age, string $sex, string $salt){
         $this->id=$id;
         $this->username=$username;
         $this->password=$password;
+        $this->profile_image_src=$profile_image_src;
         $this->age=$age;
         $this->sex=$sex;
         $this->salt=$salt;
@@ -39,6 +41,10 @@ class User{
         return $this->password;
     }
 
+    public function getProfileImageSrc(){
+        return $this->profile_image_src;
+    }
+
     public function getAge(){
         return $this->age;
     }
@@ -56,6 +62,10 @@ class User{
         // Crea una password usando la chiave appena creata.
         $encryptedPassword = hash('sha512', $plainTextPassword.$random_salt);
         $this->password = $encryptedPassword;
+    }
+
+    public function setProfileImageSrc(string $profile_image_src){
+        $this->profile_image_src = $profile_image_src;
     }
 
     public function setAge(int $age){
