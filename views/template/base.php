@@ -61,10 +61,10 @@
 
                 <!--header-->
                 <div class="card-header">
-                  <img src="<?php echo $post["foto_profilo"]; ?>" class="rounded-circle col-2">
+                  <img src="<?php echo $post["publisher"]->getProfileImageSrc(); ?>" class="rounded-circle col-2">
                   <a href="#" class="text-decoration-none text-dark"><?php echo $post["publisher"]->getUsername(); ?></a>
                 </div>
-                <img src="<?php echo $post["immagine"]; ?>" class="card-img-center" alt="...">
+                <img src="<?php echo REVIEW_IMAGE_PATH.$post["photo"]->getSrc(); ?>" class="card-img-center" alt="...">
 
                 <!--body-->
                 <div class="card-body">
@@ -74,7 +74,7 @@
                     <a href="#" class="text-decoration-none text-dark"><?php echo $post["restaurant"]->getName(); ?></a>
                   </div>
                   <div class="overflow-y-auto border border-black mb-2" style="max-height: 5em;">
-                    <p>Recensione:<?php echo $post["review"]->getContent(); ?></p>
+                    <p><?php echo $post["review"]->getContent(); ?></p>
                   </div>
 
                   <!--commenti-->
@@ -87,6 +87,19 @@
                         <p class="my-0"><?php echo $comment->getPublisherId(); ?></p>
                         <p class="my-0"><?php echo $comment->getContent(); ?></p>
                         <br>
+                      <?php endforeach; ?>
+                    </div>
+                  <?php endif; ?>
+
+                  <!--Like-->
+                  <?php if(isset ($post["likes"])): ?>
+                    <div class="text-center mt-2 mb-0">
+                    <p class="btn btn-outline-danger">Vedi Like</p>
+                    </div>
+                    <div class="overflow-y-auto border border-black" style="max-height: 5em; display:block">
+                      <?php foreach($post["likes"] as $like): ?>
+                        <p class="my-0"><?php echo $like->getUsername(); ?></p>
+                        
                       <?php endforeach; ?>
                     </div>
                   <?php endif; ?>

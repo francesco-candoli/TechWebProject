@@ -24,8 +24,6 @@ class PhotoService extends DatabaseService
         return null;
     }
     return new Photo($photo["id"], $photo["src"], $photo["alt"], $photo["review_id"]);
- 
- 
    }
 
    private function insertPhoto(Photo $photo){
@@ -44,5 +42,16 @@ class PhotoService extends DatabaseService
         $this->updatePhoto($photo);
     }
     
+   }
+
+   public function findPhotoByReviewId(int $id)
+   {
+    $stmt = $this->connection->prepare("SELECT * FROM photo WHERE review_id=?");
+    $stmt->execute([$id]);
+    $photo = $stmt->fetch();
+    if($stmt->rowCount()==0){
+        return null;
+    }
+    return new Photo($photo["id"], $photo["src"], $photo["alt"], $photo["review_id"]);
    }
 }

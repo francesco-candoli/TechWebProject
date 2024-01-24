@@ -17,6 +17,7 @@ class ReviewService extends DatabaseService
   private $commentService;
   private $userService;
   private $restaurantService;
+  private $photoService;
 
   function __construct()
   {
@@ -24,6 +25,7 @@ class ReviewService extends DatabaseService
     $this->commentService = new CommentService();
     $this->userService = new UserService();
     $this->restaurantService= new RestaurantService();
+    $this->photoService = new PhotoService();
   }
 
   public function findReviewById(int $id)
@@ -85,10 +87,11 @@ class ReviewService extends DatabaseService
 
     $data=[
       'review' => $review,
+      'photo' => $this->photoService->findPhotoByReviewId($review->getId()),
       'publisher' => $this->userService->findUserById($review->getPublisherId()),
       'restaurant' => $this->restaurantService->findRestaurantById($review->getRestaurantId()),
       'comments' => $this->findCommentsFromReview($review),
-      'likes' => $this->getLikeCount($review)
+      'likes' => $this->getLike($review)
     ];
 
     return $data;
@@ -96,7 +99,7 @@ class ReviewService extends DatabaseService
 
   public function findLastRecent($quantity)
   {
-    $stmt = $this->connection->prepare("SELECT * FROM review;");
+    $stmt = $this->connection->prepare("SELECT * FROM review ORDER BY id DESC LIMIT ?;");
     $stmt->execute([$quantity]);
     
     $i=0;
@@ -108,7 +111,7 @@ class ReviewService extends DatabaseService
     return $review;
   }
 
-  public function getLikeCount(Review $review)
+  public function getLike(Review $review)
   {
     $stmt = $this->connection->prepare("SELECT * FROM like_actions WHERE review_id=?");
     $stmt->execute([$review->getId()]);
