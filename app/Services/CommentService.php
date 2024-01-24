@@ -28,36 +28,6 @@ class CommentService extends DatabaseService
 
 
     }
-
-    private function insertComment(Comment $comment)
-    {
-        $stmt = $this->connection->prepare("INSERT INTO photo (content, review_id, publisher_id) VALUES (?,?,?)")->execute([$comment->getContent(), $comment->getReviewId(), $comment->getPublisherId()]);
-    }
-
-    private function updateComment(Comment $comment)
-    {
-        $stmt = $this->connection->prepare("UPDATE photo SET content=?, review_id=?, publisher_id=? WHERE id=?")->execute([$comment->getContent(), $comment->getReviewId(), $comment->getPublisherId(), $comment->getId()]);
-    }
-
-    public function save(Comment $comment)
-    {
-        $res = $this->findCommentById($comment->getId());
-        if ($res == null) {
-            $this->insertComment($comment);
-        } else {
-            $this->updateComment($comment);
-        }
-
-    }
-
-    public function getLikeCount(Comment $comment)
-    {
-        $stmt = $this->connection->prepare("SELECT * FROM like_actions WHERE comment_id=?");
-
-        $stmt->execute([$comment->getId()]);
-
-        while ($row = $stmt->fetch()) {
-
-        }
-    }
+    
+   
 }
