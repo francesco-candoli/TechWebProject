@@ -19,10 +19,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#">Home</a>
+              <a class="nav-link" href="">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Profilo</a>
+              <a class="nav-link" href="">Profilo</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Impostazioni</a>
@@ -42,12 +42,12 @@
       <br/>
       <!--Profilo-->
       <div class="container col-12 col-sm-6">
-        <div class="justify-content-sm-center">
-          <?php if (isset($utente)): ?>
-            <h1>@<?php echo $utente["nickname"]; ?></h1>
-            <img src="<?php echo $utente["foto_profilo"]; ?>" class="rounded-circle col-5">
+        <div class="text-center">
+          <?php if (isset($profilo)): ?>
+            <h1 class="align-middle">@<?php echo $profilo->getUsername(); ?></h1>
+            <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profilo->getProfileImageSrc(); ?>" class="rounded-circle col-5">
             <hr class="border border-dark">
-            <p><?php echo $utente["biografia"]; ?>.</p>
+            <p><?php echo "Età:".$profilo->getAge()." - Sesso:".$profilo->getSex(); ?></p>
           <?php endif; ?>
         </div>
       </div>

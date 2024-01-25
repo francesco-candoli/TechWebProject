@@ -31,10 +31,6 @@ class UserService extends DatabaseService
       return new User($user["id"], $user["username"], $user["password"], $user["profile_image_src"], $user["age"], $user["sex"], $user["salt"]);
    }
 
-   private function update(){
-
-   }
-
    public function save(User $user)
    {
       $userFromDb= $this->findUserById($user->getID());

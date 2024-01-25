@@ -100,7 +100,7 @@ class ReviewService extends DatabaseService
 
   public function findLastRecent($quantity)
   {
-    $stmt = $this->connection->prepare("SELECT * FROM review");
+    $stmt = $this->connection->prepare("SELECT * FROM review LIMIT ?");
     $stmt->execute([$quantity]);
     
     $i=0;
