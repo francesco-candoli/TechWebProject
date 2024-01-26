@@ -24,8 +24,9 @@ class HomeController extends Controller
 	{
 		$recensioni=[];
 		$counter=0;
+
 		if($this->authManager->login_check()){
-			
+			$profile= $this->userService->findUserById($_SESSION["user_id"]);
 			$follows= $this->userService->findFollowedByUserId($_SESSION["user_id"]);
 			foreach($follows as $follow){
 				$reviews = $this->reviewService->findByPublisher($follow);

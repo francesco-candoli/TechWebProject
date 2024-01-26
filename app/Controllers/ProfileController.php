@@ -24,11 +24,10 @@ class ProfileController extends Controller
 	public function indexAction(RouteCollection $routes)
 	{
 		$recensioni=[];
-        $profilo=[];
-		$counter=0;
+
 		if($this->authManager->login_check()){
-            $profilo = $this->userService->findUserById($_SESSION["user_id"]);
-			$reviews = $this->reviewService->findByPublisher($profilo);
+            $profile = $this->userService->findUserById($_SESSION["user_id"]);
+			$reviews = $this->reviewService->findByPublisher($profile);
 			foreach($reviews as $review){
 				$recensioni[$counter]=$this->reviewService->viewSerialize($review);
 				$counter++;
