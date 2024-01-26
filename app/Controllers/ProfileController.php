@@ -23,6 +23,7 @@ class ProfileController extends Controller
     // Homepage action
 	public function indexAction(RouteCollection $routes)
 	{
+		$counter=0;
 		$recensioni=[];
 
 		if($this->authManager->login_check()){
