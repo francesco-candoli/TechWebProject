@@ -48,10 +48,13 @@ class PhotoService extends DatabaseService
    {
     $stmt = $this->connection->prepare("SELECT * FROM photo WHERE review_id=?");
     $stmt->execute([$id]);
-    $photo = $stmt->fetch();
-    if($stmt->rowCount()==0){
-        return null;
+
+    $i=0;
+    $photos=[];
+    while($row = $stmt->fetch()) {
+      $photos[$i] = new Photo($row["id"], $row["src"], $row["alt"], $row["review_id"]);
+      $i++;
     }
-    return new Photo($photo["id"], $photo["src"], $photo["alt"], $photo["review_id"]);
-   }
+    return $photos;
+    }
 }

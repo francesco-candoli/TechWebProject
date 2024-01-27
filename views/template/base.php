@@ -1,3 +1,9 @@
+<?php
+
+  //mandare variabile allo script js
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -65,8 +71,21 @@
                   <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$post["publisher"]->getProfileImageSrc(); ?>" class="rounded-circle col-2">
                   <a href="#" class="text-decoration-none text-dark"><?php echo $post["publisher"]->getUsername(); ?></a>
                 </div>
-                <img src="" class="card-img-center" alt="...">
 
+                <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$post["photo"][0]->getSrc(); ?>" class="card-img-center" alt="..."  id="review_image">
+                <div class="d-flex justify-content-center align-content-center" id="image-slider">
+                        <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="left-slider">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="right-slider">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8m-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5"/>
+                            </svg>
+                        </button>
+                        
+                    </div>
                 <!--body-->
                 <div class="card-body">
 
@@ -81,27 +100,30 @@
                   <!--commenti-->
                   <?php if(isset ($post["comments"])): ?>
                     <div class="text-center">
-                    <p class="btn btn-outline-primary">Commenti</p>
+                      <p class="btn btn-outline-primary" id="comment_hider">Commenti</p>
                     </div>
-                    <div class="overflow-y-auto border border-black" style="max-height: 5em; display:block">
-                      <?php foreach($post["comments"] as $comment): ?>
-                        <p class="my-0"><?php echo $comment->getPublisherId(); ?></p>
-                        <p class="my-0"><?php echo $comment->getContent(); ?></p>
-                        <br>
-                      <?php endforeach; ?>
-                    </div>
+                    <div id="comment_div" style="display: none">
+                      <div class="overflow-y-auto border border-black" style="max-height: 5em; display:block">
+                        <?php foreach($post["comments"] as $comment): ?>
+                          <p class="ms-2 my-0" style="display: inline-block;"><?php echo $comment->getPublisherId(); ?>:</p>
+                          <p class="my-0" style="display: inline-block;"><?php echo $comment->getContent(); ?></p>
+                          <br>
+                        <?php endforeach; ?>
+                      </div>
+                      </div>
                   <?php endif; ?>
 
                   <!--Like-->
                   <?php if(isset ($post["likes"])): ?>
                     <div class="text-center mt-2 mb-0">
-                    <p class="btn btn-outline-danger">Vedi Like</p>
+                      <p class="btn btn-outline-danger" id="like_hider">Vedi Like</p>
                     </div>
-                    <div class="overflow-y-auto border border-black" style="max-height: 5em; display:block">
-                      <?php foreach($post["likes"] as $like): ?>
-                        <p class="my-0"><?php echo $like->getUsername(); ?></p>
-                        
-                      <?php endforeach; ?>
+                    <div id="like_div" style="display:none">
+                      <div class="overflow-y-auto border border-black" style="max-height: 5em; display:block">
+                        <?php foreach($post["likes"] as $like): ?>
+                          <p class="ms-2 my-0"><?php echo $like->getUsername(); ?></p>
+                        <?php endforeach; ?>
+                      </div>
                     </div>
                   <?php endif; ?>
 
@@ -148,6 +170,7 @@
           
     </main>
 
+    <script src=""></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
 </html>
