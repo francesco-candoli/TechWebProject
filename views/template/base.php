@@ -72,6 +72,7 @@
                   <a href="#" class="text-decoration-none text-dark"><?php echo $post["publisher"]->getUsername(); ?></a>
                 </div>
 
+                <?php if(isset($post["photo"][0])): ?>
                 <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$post["photo"][0]->getSrc(); ?>" class="card-img-center" alt="..."  id="review_image">
                 <div class="d-flex justify-content-center align-content-center" id="image-slider">
                         <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="left-slider">
@@ -86,6 +87,7 @@
                         </button>
                         
                     </div>
+                    <?php endif; ?>
                 <!--body-->
                 <div class="card-body">
 
@@ -170,7 +172,59 @@
           
     </main>
 
-    <script src=""></script>
+    <script>
+
+<?php
+$c=0;
+$y=0;
+
+echo "var photos=[";
+
+foreach($recensioni as $post){ 
+  if($c!=0){
+    echo ",";
+  }
+  $c++;
+  echo "[";
+  foreach($post["photo"] as $photo){
+    if($y!=0){
+      echo ",";
+
+    }
+    $y++;
+    echo "'".$photo->getSrc()."'";
+    
+  }
+
+  echo "]";
+  $y=0;
+}
+
+echo "];";
+
+?>
+
+const leftSliders = document.querySelectorAll("#left-slider");
+const rightSliders = document.querySelectorAll("#right-slider");
+const image = document.querySelectorAll("#review_image");
+
+for (let i = 0; i < leftSliders.length; i++) {
+    leftSliders[i].addEventListener("click", function () {
+        let index = photos[i].indexOf(image[i].getAttribute("src"));
+        if (index > 0) {
+            index = (index - 1);
+            image[i].setAttribute("src", photos[i][index]);
+        }
+    })
+
+    rightSliders[i].addEventListener("click", function () {
+        let index = photos[i].indexOf(image[i].getAttribute("src"));
+        if (index < (photos[i].length - 1)) {
+            index = index + 1;
+            image[i].setAttribute("src", photos[i][index]);
+        }
+    })
+}</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
 </html>
