@@ -34,14 +34,7 @@ class ProfileController extends Controller
 				$counter++;
 			}
 		}else{
-			$reviews = $this->reviewService->findLastRecent(2);
-	
-				foreach($reviews as $review){
-					$recensioni[$counter]=$this->reviewService->viewSerialize($review);
-					$counter++;
-				}
-			
-			
+			header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."login");
 		}
 
         require_once APP_ROOT . '/views/home.php';

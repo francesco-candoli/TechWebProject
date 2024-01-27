@@ -49,11 +49,14 @@
       <!--Profilo-->
       <div class="container col-12 col-sm-6">
         <div class="text-center">
-          <?php if (isset($profilo)): ?>
-            <h1 class="align-middle">@<?php echo $profilo->getUsername(); ?></h1>
-            <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profilo->getProfileImageSrc(); ?>" class="rounded-circle col-5">
+          <?php if (isset($profile)): ?>
+            <h1 class="align-middle">@<?php echo $profile->getUsername(); ?></h1>
+            <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5">
+            <hr class="border border-light">
+            <a href="#" class="btn btn-outline-primary">Follow</a>
             <hr class="border border-dark">
-            <p><?php echo "Età:".$profilo->getAge()." - Sesso:".$profilo->getSex(); ?></p>
+            <p><?php echo "Età: ".$profile->getAge()." - Sesso: ".strtoupper($profile->getSex()); ?></p>
+            <hr class="border border-dark">
           <?php endif; ?>
         </div>
       </div>
@@ -74,20 +77,19 @@
 
                 <?php if(isset($post["photo"][0])): ?>
                 <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$post["photo"][0]->getSrc(); ?>" class="card-img-center" alt="..."  id="review_image">
-                <div class="d-flex justify-content-center align-content-center" id="image-slider">
-                        <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="left-slider">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"/>
-                            </svg>
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="right-slider">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8m-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5"/>
-                            </svg>
-                        </button>
-                        
-                    </div>
-                    <?php endif; ?>
+                  <div class="d-flex justify-content-center align-content-center" id="image-slider">
+                    <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="left-slider">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"/>
+                      </svg>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="right-slider">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8m-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5"/>
+                      </svg>
+                    </button>
+                  </div>
+                <?php endif; ?>
                 <!--body-->
                 <div class="card-body">
 
