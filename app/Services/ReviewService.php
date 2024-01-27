@@ -118,7 +118,7 @@ class ReviewService extends DatabaseService
     $stmt->execute([$review->getId()]);
     
 
-    if ($stmt->rowCount() == 0) {
+    if($stmt->rowCount() == 0) {
       return null;
     }
     $i=0;
@@ -133,6 +133,9 @@ class ReviewService extends DatabaseService
   public function findCommentsFromReview(Review $review){
     $stmt= $this->connection->prepare("SELECT * FROM comment WHERE review_id=?");
     $stmt->execute([$review->getId()]);
+    if($stmt->rowCount() == 0) {
+      return null;
+    }
     $counter=0;
     $comments=[];
     while($comment = $stmt->fetch()){

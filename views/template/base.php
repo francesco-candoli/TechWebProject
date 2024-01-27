@@ -96,13 +96,13 @@
                     <a href="#" class="text-decoration-none text-dark"><?php echo $post["restaurant"]->getName(); ?></a>
                   </div>
                   <div class="overflow-y-auto border border-black mb-2" style="max-height: 5em;">
-                    <p><?php echo $post["review"]->getContent(); ?></p>
+                    <p class="ms-2"><?php echo $post["review"]->getContent(); ?></p>
                   </div>
 
                   <!--commenti-->
                   <?php if(isset ($post["comments"])): ?>
                     <div class="text-center">
-                      <p class="btn btn-outline-primary" id="comment_hider">Commenti</p>
+                      <p class="btn btn-outline-primary" id="comment_hider">Vedi Commenti</p>
                     </div>
                     <div id="comment_div" style="display: none">
                       <div class="overflow-y-auto border border-black" style="max-height: 5em; display:block">
@@ -173,58 +173,85 @@
     </main>
 
     <script>
+      <?php
+      $c=0;
+      $y=0;
 
-<?php
-$c=0;
-$y=0;
+      echo "var photos=[";
 
-echo "var photos=[";
+      foreach($recensioni as $post){ 
+        if($c!=0){
+          echo ",";
+        }
+        $c++;
+        echo "[";
+        foreach($post["photo"] as $photo){
+          if($y!=0){
+            echo ",";
+          }
+          $y++;
+          echo "'".$photo->getSrc()."'";
+          
+        }
+        echo "]";
+        $y=0;
+      }
+      echo "];";
+      ?>
 
-foreach($recensioni as $post){ 
-  if($c!=0){
-    echo ",";
-  }
-  $c++;
-  echo "[";
-  foreach($post["photo"] as $photo){
-    if($y!=0){
-      echo ",";
+    const leftSliders = document.querySelectorAll("#left-slider");
+    const rightSliders = document.querySelectorAll("#right-slider");
+    const image = document.querySelectorAll("#review_image");
 
+    for (let i = 0; i < leftSliders.length; i++) {
+        leftSliders[i].addEventListener("click", function () {
+            let index = photos[i].indexOf(image[i].getAttribute("src"));
+            if (index > 0) {
+                index = (index - 1);
+                image[i].setAttribute("src", photos[i][index]);
+            }
+        })
+
+        rightSliders[i].addEventListener("click", function () {
+            let index = photos[i].indexOf(image[i].getAttribute("src"));
+            if (index < (photos[i].length - 1)) {
+                index = index + 1;
+                image[i].setAttribute("src", photos[i][index]);
+            }
+        })
     }
-    $y++;
-    echo "'".$photo->getSrc()."'";
-    
-  }
 
-  echo "]";
-  $y=0;
-}
+    // COMMENTI
+    const comment_hiders = document.querySelectorAll("#comment_hider");
+    const comment_divs = document.querySelectorAll("#comment_div");
+    for (let i = 0; i < comment_hiders.length; i++) {
+        comment_hiders[i].addEventListener("click", function () {
+            if (comment_divs[i].getAttribute("style") == "") {
+                comment_divs[i].setAttribute("style", "display:none");
+                comment_hiders[i].setAttribute("class", "btn btn-outline-primary");
+            } else {
+                comment_divs[i].setAttribute("style", "");
+                comment_hiders[i].setAttribute("class", "btn btn-primary");
+            }
+        })
+    }
 
-echo "];";
+    // LIKE
+    const like_hiders = document.querySelectorAll("#like_hider");
+    const like_divs = document.querySelectorAll("#like_div");
+    for (let i = 0; i < like_hiders.length; i++) {
+        like_hiders[i].addEventListener("click", function () {
+            if (like_divs[i].getAttribute("style") == "") {
+                like_divs[i].setAttribute("style", "display:none");
+                like_hiders[i].setAttribute("class", "btn btn-outline-danger");
+            } else {
+                like_divs[i].setAttribute("style", "");
+                like_hiders[i].setAttribute("class", "btn btn-danger");
+            }
+        })
+    }
 
-?>
-
-const leftSliders = document.querySelectorAll("#left-slider");
-const rightSliders = document.querySelectorAll("#right-slider");
-const image = document.querySelectorAll("#review_image");
-
-for (let i = 0; i < leftSliders.length; i++) {
-    leftSliders[i].addEventListener("click", function () {
-        let index = photos[i].indexOf(image[i].getAttribute("src"));
-        if (index > 0) {
-            index = (index - 1);
-            image[i].setAttribute("src", photos[i][index]);
-        }
-    })
-
-    rightSliders[i].addEventListener("click", function () {
-        let index = photos[i].indexOf(image[i].getAttribute("src"));
-        if (index < (photos[i].length - 1)) {
-            index = index + 1;
-            image[i].setAttribute("src", photos[i][index]);
-        }
-    })
-}</script>
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
 </html>
