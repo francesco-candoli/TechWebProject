@@ -31,6 +31,21 @@ class UserService extends DatabaseService
       return new User($user["id"], $user["username"], $user["password"], $user["profile_image_src"], $user["age"], $user["sex"], $user["salt"]);
    }
 
+   public function findUserByUsername(string $username)
+   {
+
+      // select a particular user by id
+      $stmt = $this->connection->prepare("SELECT * FROM user WHERE username=?");
+      $stmt->execute([$username]);
+      $user = $stmt->fetch();
+
+      if($stmt->rowCount()==0){
+         return null;
+      }
+
+      return new User($user["id"], $user["username"], $user["password"], $user["profile_image_src"], $user["age"], $user["sex"], $user["salt"]);
+   }
+
    public function save(User $user)
    {
       $userFromDb= $this->findUserById($user->getID());

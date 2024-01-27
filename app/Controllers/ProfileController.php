@@ -21,13 +21,18 @@ class ProfileController extends Controller
 		$this->reviewService= new ReviewService();
 	}
     // Homepage action
-	public function indexAction(RouteCollection $routes)
+	public function indexAction(RouteCollection $routes, string $username)
 	{
 		$counter=0;
 		$recensioni=[];
 
 		if($this->authManager->login_check()){
-            $profile = $this->userService->findUserById($_SESSION["user_id"]);
+			if($username==$_SESSION["username"]){
+				$canFollow=false;
+			}else{
+				$canFollow=true;
+			}
+			$profile = $this->userService->findUserByUsername($username);
 			$reviews = $this->reviewService->findByPublisher($profile);
 			foreach($reviews as $review){
 				$recensioni[$counter]=$this->reviewService->viewSerialize($review);

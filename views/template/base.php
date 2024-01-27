@@ -52,8 +52,10 @@
           <?php if (isset($profile)): ?>
             <h1 class="align-middle">@<?php echo $profile->getUsername(); ?></h1>
             <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5">
-            <hr class="border border-light">
-            <a href="#" class="btn btn-outline-primary">Follow</a>
+            <?php if ($canFollow): ?>
+              <hr class="border border-light">
+              <a href="#" class="btn btn-outline-primary">Follow</a>
+            <?php endif; ?>
             <hr class="border border-dark">
             <p><?php echo "Età: ".$profile->getAge()." - Sesso: ".strtoupper($profile->getSex()); ?></p>
             <hr class="border border-dark">
