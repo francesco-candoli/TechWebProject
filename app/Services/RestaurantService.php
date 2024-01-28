@@ -26,6 +26,18 @@ class RestaurantService extends DatabaseService
  
    }
 
+   public function findRestaurantByName(string $name)
+   {
+    $stmt = $this->connection->prepare("SELECT * FROM restaurant WHERE name=?");
+    $stmt->execute([$name]);
+    $restaurant = $stmt->fetch();
+    if($stmt->rowCount()==0){
+        return null;
+    }
+    return new Restaurant($restaurant["id"], $restaurant["name"], $restaurant["address"]);
+ 
+   }
+
    private function insertRestaurant(Restaurant $restaurant){
     $stmt = $this->connection->prepare("INSERT INTO restaurant (name,address) VALUES (?,?)")->execute([$restaurant->getName(), $restaurant->getAddress()]);
    }

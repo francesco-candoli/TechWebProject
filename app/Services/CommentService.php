@@ -34,6 +34,23 @@ class CommentService extends DatabaseService
 
     }
 
+    private function insertComment(Comment $comment){
+        $stmt = $this->connection->prepare("INSERT INTO comment (content, review_id, publisher_id) VALUES (?,?)")->execute([$comment->getContent(), $comment->getReviewId(), $comment->getPublisherId()]);
+       }
+    
+       private function updateComment(Comment $comment){
+        $stmt = $this->connection->prepare("UPDATE restaurant SET name=?, address=? WHERE id=?")->execute([ $restaurant->getName(), $restaurant->getAddress(), $restaurant->getId()]); 
+       }
+    
+       public function save(Restaurant $restaurant){
+        $res= $this->findRestaurantById($restaurant->getId());
+        if($res==null){
+            $this->insertRestaurant($restaurant);
+        }else{
+            $this->updateRestaurant($restaurant);
+        }
+        
+       }
  
     
    
