@@ -149,19 +149,28 @@
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
+<!--Notifiche-->
+<?php if (isset($notifiche)): ?>
 
-      <!--Notifiche-->
-      <?php if(isset($notifiche)): ?>
-        <?php foreach($notifiche as $notifica): ?>
-          <div class="container col-12 col-sm-6 p-0">
-            <div class="justify-content-sm-center my-1">
-              <div class="border border-black">
-                  <p><?php echo $notifica; ?></p>
-              </div>  
+  <?php foreach ($notifiche as $notifica): ?>
+    
+    <div class="container col-12 col-sm-6 p-0">
+      <div class="justify-content-sm-center my-1">
+      <div class="card" >
+      <div class="card-body">
+        <h5 class="card-title"> <a href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$notifica->getUrl(); ?>">Link</a> 
+                </h5>
+                <p class="card-text">
+                  <?php echo $notifica->getContent(); ?>
+                </p>
+                <a class="btn btn-danger" onclick="deleteNotification(<?php echo $notifica->getId() ?>)">X</a>
+              </div>
             </div>
           </div>
-        <?php endforeach; ?>
-      <?php endif; ?> 
+        </div>
+    <br>
+  <?php endforeach; ?>
+<?php endif; ?>
       
       <!--Form Recensione-->
       <?php if(isset($form)):?>
@@ -175,6 +184,34 @@
         <?php endif;?>
           
     </main>
+    <script>
+         function deleteNotification(id){
+      
+      // 1. Crea un nuovo oggetto XMLHttpRequest
+let xhr = new XMLHttpRequest();
+
+// 2. Lo configura: richiesta GET per l'URL /article/.../load
+xhr.open('GET', '<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER; ?>notifications/delete/'+id);
+
+// 3. Invia la richiesta alla rete
+xhr.send();
+
+// 4. Questo codice viene chiamato dopo la ricezione della risposta
+xhr.onload = function() {
+  if (xhr.status != 200) { // analizza lo status HTTP della risposta
+    alert(`Error ${xhr.status}: ${xhr.statusText}`); // ad esempio 404: Not Found
+  } else { // mostra il risultato
+    alert(`Done, ${xhr.response}`); // response contiene la risposta del server
+  }
+};
+
+
+xhr.onerror = function() {
+  alert("Request failed");
+};
+    }
+
+    </script>
 
     <script>
       <?php
@@ -194,7 +231,7 @@
             echo ",";
           }
           $y++;
-          echo "'".$photo->getSrc()."'";
+          echo "'". PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$photo->getSrc()."'";
           
         }
         echo "]";
@@ -255,6 +292,7 @@
         })
     }
 
+ 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>

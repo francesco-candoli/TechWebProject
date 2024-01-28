@@ -21,10 +21,11 @@ class ProfileController extends Controller
 		$this->reviewService= new ReviewService();
 	}
     // Homepage action
-	public function indexAction(RouteCollection $routes, string $username)
+	public function indexAction(string $username, RouteCollection $routes)
 	{
 		$counter=0;
 		$recensioni=[];
+		$canFollow=false;
 
 		if($this->authManager->login_check()){
 			if($username==$_SESSION["username"]){

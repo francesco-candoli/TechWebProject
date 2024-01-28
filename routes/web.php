@@ -11,3 +11,5 @@ $routes->add('processLogin', new Route(constant('URL_SUBFOLDER') . 'processLogin
 $routes->add('login', new Route(constant('URL_SUBFOLDER') . 'login', array('controller' => 'LoginController', 'method'=>'index'), array()));
 $routes->add('logout', new Route(constant('URL_SUBFOLDER') . 'logout', array('controller' => 'LoginController', 'method'=>'logout'), array()));
 $routes->add('test', new Route(constant('URL_SUBFOLDER'). 'test/service', array('controller' => 'TestController', 'method'=>'index'), array()));
+$routes->add('notifications', new Route(constant('URL_SUBFOLDER') . 'notifications', array('controller' => 'NotificationController', 'method'=>'index'), array()));
+$routes->add('notifications/delete/{notification_id}', new Route(constant('URL_SUBFOLDER') . 'notifications/delete/{notification_id}', array('controller' => 'NotificationController', 'method'=>'delete'), array('notification_id'=>'.*')));
