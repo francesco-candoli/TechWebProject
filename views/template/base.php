@@ -31,7 +31,7 @@
               <a class="nav-link" href="<?php if(isset($_SESSION["username"])){ echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/".$_SESSION["username"]; }else{ echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."login";}?>">Profilo</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Notifiche</a>
+              <a class="nav-link" href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."notifications";?>">Notifiche</a>
             </li>
           </ul>
           <div class="d-flex">
@@ -141,21 +141,25 @@
                   <?php endif; ?>
 
                   <!--pulsanti d'interazione-->
-                  <div>
-                    <div class="card-footer m-2 align-middle ">
-                      <button class="btn btn-danger mb-2" style="display: inline-block;">Like</button>
-                      <form method="POST" style="display:inline-block">
-                        <input type="submit" name="Submit" value="Commenta" class="btn btn-primary" style="display:inline-block"/>
-                        <input type="text" id="commento" name="commento" required style="display:inline-block"/>
-                      </form></div>
+                  <?php if(isset ($_SESSION["user_id"])): ?>
+                    <div>
+                      <div class="card-footer m-2 align-middle ">
+                        <button class="btn btn-danger mb-2" style="display: inline-block;" onclick="addLike(<?php echo $_SESSION['user_id'] ?>,<?php echo $post['publisher']->getId() ?>)">Like</button>
+                        <form method="POST" style="display:inline-block">
+                          <input type="submit" name="Submit" value="Commenta" class="btn btn-primary" style="display:inline-block"/>
+                          <input type="text" id="commento" name="commento" required style="display:inline-block"/>
+                        </form></div>
+                      </div>
                     </div>
-                  </div>
+                  <?php endif; ?>
+
                 </div>
               </div>
             </div>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
+      
 <!--Notifiche-->
 <?php if (isset($notifiche)): ?>
 
@@ -169,8 +173,8 @@
                 </h5>
                 <p class="card-text">
                   <?php echo $notifica->getContent(); ?>
-                </p>
-                <a class="btn btn-danger" onclick="deleteNotification(<?php echo $notifica->getId() ?>)">X</a>
+                </p>                               
+                <a class="btn btn-danger" onclick="deleteNotification(<?php echo $notifica->getId()?>)">X</a>
               </div>
             </div>
           </div>
@@ -193,16 +197,12 @@
     </main>
     <script>
       function deleteNotification(id){
-        
         // 1. Crea un nuovo oggetto XMLHttpRequest
         let xhr = new XMLHttpRequest();
-
         // 2. Lo configura: richiesta GET per l'URL /article/.../load
         xhr.open('GET', '<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER; ?>notifications/delete/'+id);
-
         // 3. Invia la richiesta alla rete
         xhr.send();
-
         // 4. Questo codice viene chiamato dopo la ricezione della risposta
         xhr.onload = function() {
           if (xhr.status != 200) { // analizza lo status HTTP della risposta
@@ -211,8 +211,48 @@
             alert(`Done, ${xhr.response}`); // response contiene la risposta del server
           }
         };
+        xhr.onerror = function() {
+          alert("Request failed");
+        };
+        window.location.assign(window.location.href);
+      }
 
+      function deleteLike(id){
+        // 1. Crea un nuovo oggetto XMLHttpRequest
+        let xhr = new XMLHttpRequest();
+        // 2. Lo configura: richiesta GET per l'URL /article/.../load
+        xhr.open('GET', '<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER; ?>like/delete/'+id);
+        // 3. Invia la richiesta alla rete
+        xhr.send();
+        // 4. Questo codice viene chiamato dopo la ricezione della risposta
+        xhr.onload = function() {
+          if (xhr.status != 200) { // analizza lo status HTTP della risposta
+            alert(`Error ${xhr.status}: ${xhr.statusText}`); // ad esempio 404: Not Found
+          } else { // mostra il risultato
+            alert(`Done, ${xhr.response}`); // response contiene la risposta del server
+          }
+        };
+        xhr.onerror = function() {
+          alert("Request failed");
+        };
+      }
 
+      function addLike(user_id, review_id){
+        console.log(user_id+"_"+review_id);
+        // 1. Crea un nuovo oggetto XMLHttpRequest
+        let xhr = new XMLHttpRequest();
+        // 2. Lo configura: richiesta GET per l'URL /article/.../load
+        xhr.open('GET', '<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER; ?>like/add/'+user_id+"_"+review_id);
+        // 3. Invia la richiesta alla rete
+        xhr.send();
+        // 4. Questo codice viene chiamato dopo la ricezione della risposta
+        xhr.onload = function() {
+          if (xhr.status != 200) { // analizza lo status HTTP della risposta
+            alert(`Error ${xhr.status}: ${xhr.statusText}`); // ad esempio 404: Not Found
+          } else { // mostra il risultato
+            alert(`Done, ${xhr.response}`); // response contiene la risposta del server
+          }
+        };
         xhr.onerror = function() {
           alert("Request failed");
         };
