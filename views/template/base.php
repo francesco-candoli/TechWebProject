@@ -18,34 +18,32 @@
     <!-- Barra di navigazione-->
     <nav class="navbar navbar-expand-lg sticky-top bg-warning">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Nome Social</a>
+        <a class="navbar-brand" href="">Nome Social</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="">Home</a>
+              <a class="nav-link" href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER;?>">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="">Profilo</a>
+              <a class="nav-link" href="<?php if(isset($_SESSION["username"])){ echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/".$_SESSION["username"]; }else{ echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."login";}?>">Profilo</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Impostazioni</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Notifiche</a>
+              <a class="nav-link" href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."notifications";?>">Notifiche</a>
             </li>
           </ul>
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-secondary " type="submit">Search</button>
-          </form>
+          <div class="d-flex">
+            <input class="me-2" placeholder="Search" id="search_label">
+            <button class="btn btn-outline-secondary" id="search_button">Search</button>
+          </div>
         </div>
       </div>
     </nav>
     <main>
       <br/>
+
       <!--Profilo-->
       <div class="container col-12 col-sm-6">
         <div class="text-center">
@@ -54,11 +52,20 @@
             <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5">
             <?php if ($canFollow): ?>
               <hr class="border border-light">
-              <a href="#" class="btn btn-outline-primary">Follow</a>
+              <a href="#" class="btn btn-outline-primary"><?php if($follow) echo "Unfollow"; else echo "Follow";?></a>
             <?php endif; ?>
             <hr class="border border-dark">
             <p><?php echo "Età: ".$profile->getAge()." - Sesso: ".strtoupper($profile->getSex()); ?></p>
             <hr class="border border-dark">
+          <?php endif; ?>
+        </div>
+      </div>
+
+      <!--Error-->
+      <div class="container col-12 col-sm-6">
+        <div class="text-center">
+          <?php if (isset($error_message)): ?>
+            <h2><?php echo $error_message; ?></h2>
           <?php endif; ?>
         </div>
       </div>
@@ -134,21 +141,25 @@
                   <?php endif; ?>
 
                   <!--pulsanti d'interazione-->
-                  <div>
-                    <div class="card-footer m-2 align-middle ">
-                      <button class="btn btn-danger mb-2" style="display: inline-block;">Like</button>
-                      <form method="POST" style="display:inline-block">
-                        <input type="submit" name="Submit" value="Commenta" class="btn btn-primary" style="display:inline-block"/>
-                        <input type="text" id="commento" name="commento" required style="display:inline-block"/>
-                      </form></div>
+                  <?php if(isset ($_SESSION["user_id"])): ?>
+                    <div>
+                      <div class="card-footer m-2 align-middle ">
+                        <button class="btn btn-danger mb-2" style="display: inline-block;" onclick="addLike(<?php echo $_SESSION['user_id'] ?>,<?php echo $post['publisher']->getId() ?>)">Like</button>
+                        <form method="POST" style="display:inline-block">
+                          <input type="submit" name="Submit" value="Commenta" class="btn btn-primary" style="display:inline-block"/>
+                          <input type="text" id="commento" name="commento" required style="display:inline-block"/>
+                        </form></div>
+                      </div>
                     </div>
-                  </div>
+                  <?php endif; ?>
+
                 </div>
               </div>
             </div>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
+      
 <!--Notifiche-->
 <?php if (isset($notifiche)): ?>
 
@@ -162,8 +173,8 @@
                 </h5>
                 <p class="card-text">
                   <?php echo $notifica->getContent(); ?>
-                </p>
-                <a class="btn btn-danger" onclick="deleteNotification(<?php echo $notifica->getId() ?>)">X</a>
+                </p>                               
+                <a class="btn btn-danger" onclick="deleteNotification(<?php echo $notifica->getId()?>)">X</a>
               </div>
             </div>
           </div>
@@ -185,31 +196,67 @@
           
     </main>
     <script>
-         function deleteNotification(id){
-      
-      // 1. Crea un nuovo oggetto XMLHttpRequest
-let xhr = new XMLHttpRequest();
+      function deleteNotification(id){
+        // 1. Crea un nuovo oggetto XMLHttpRequest
+        let xhr = new XMLHttpRequest();
+        // 2. Lo configura: richiesta GET per l'URL /article/.../load
+        xhr.open('GET', '<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER; ?>notifications/delete/'+id);
+        // 3. Invia la richiesta alla rete
+        xhr.send();
+        // 4. Questo codice viene chiamato dopo la ricezione della risposta
+        xhr.onload = function() {
+          if (xhr.status != 200) { // analizza lo status HTTP della risposta
+            alert(`Error ${xhr.status}: ${xhr.statusText}`); // ad esempio 404: Not Found
+          } else { // mostra il risultato
+            alert(`Done, ${xhr.response}`); // response contiene la risposta del server
+          }
+        };
+        xhr.onerror = function() {
+          alert("Request failed");
+        };
+        window.location.assign(window.location.href);
+      }
 
-// 2. Lo configura: richiesta GET per l'URL /article/.../load
-xhr.open('GET', '<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER; ?>notifications/delete/'+id);
+      function deleteLike(id){
+        // 1. Crea un nuovo oggetto XMLHttpRequest
+        let xhr = new XMLHttpRequest();
+        // 2. Lo configura: richiesta GET per l'URL /article/.../load
+        xhr.open('GET', '<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER; ?>like/delete/'+id);
+        // 3. Invia la richiesta alla rete
+        xhr.send();
+        // 4. Questo codice viene chiamato dopo la ricezione della risposta
+        xhr.onload = function() {
+          if (xhr.status != 200) { // analizza lo status HTTP della risposta
+            alert(`Error ${xhr.status}: ${xhr.statusText}`); // ad esempio 404: Not Found
+          } else { // mostra il risultato
+            alert(`Done, ${xhr.response}`); // response contiene la risposta del server
+          }
+        };
+        xhr.onerror = function() {
+          alert("Request failed");
+        };
+      }
 
-// 3. Invia la richiesta alla rete
-xhr.send();
-
-// 4. Questo codice viene chiamato dopo la ricezione della risposta
-xhr.onload = function() {
-  if (xhr.status != 200) { // analizza lo status HTTP della risposta
-    alert(`Error ${xhr.status}: ${xhr.statusText}`); // ad esempio 404: Not Found
-  } else { // mostra il risultato
-    alert(`Done, ${xhr.response}`); // response contiene la risposta del server
-  }
-};
-
-
-xhr.onerror = function() {
-  alert("Request failed");
-};
-    }
+      function addLike(user_id, review_id){
+        console.log(user_id+"_"+review_id);
+        // 1. Crea un nuovo oggetto XMLHttpRequest
+        let xhr = new XMLHttpRequest();
+        // 2. Lo configura: richiesta GET per l'URL /article/.../load
+        xhr.open('GET', '<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER; ?>like/add/'+user_id+"_"+review_id);
+        // 3. Invia la richiesta alla rete
+        xhr.send();
+        // 4. Questo codice viene chiamato dopo la ricezione della risposta
+        xhr.onload = function() {
+          if (xhr.status != 200) { // analizza lo status HTTP della risposta
+            alert(`Error ${xhr.status}: ${xhr.statusText}`); // ad esempio 404: Not Found
+          } else { // mostra il risultato
+            alert(`Done, ${xhr.response}`); // response contiene la risposta del server
+          }
+        };
+        xhr.onerror = function() {
+          alert("Request failed");
+        };
+      }
 
     </script>
 
@@ -218,7 +265,7 @@ xhr.onerror = function() {
       $c=0;
       $y=0;
 
-      echo "var photos=[";
+      echo "const photos=[";
 
       foreach($recensioni as $post){ 
         if($c!=0){
@@ -238,6 +285,7 @@ xhr.onerror = function() {
         $y=0;
       }
       echo "];";
+      echo "const profileURL = '".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/'";
       ?>
 
     const leftSliders = document.querySelectorAll("#left-slider");
@@ -291,6 +339,13 @@ xhr.onerror = function() {
             }
         })
     }
+
+    //SEARCH BUTTON
+    const search_button = document.getElementById("search_button");
+    const search_label = document.getElementById("search_label");
+    search_button.addEventListener("click",function() {
+      window.location.assign(profileURL.concat(search_label.value))
+    });
 
  
     </script>
