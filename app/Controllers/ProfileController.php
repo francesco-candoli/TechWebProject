@@ -28,16 +28,21 @@ class ProfileController extends Controller
 		$canFollow=false;
 
 		if($this->authManager->login_check()){
-			if($username==$_SESSION["username"]){
-				$canFollow=false;
+			if($this->userService->findUserByUsername($username)==null){
+				$error_message = "Username non trovato";
 			}else{
-				$canFollow=true;
-			}
-			$profile = $this->userService->findUserByUsername($username);
-			$reviews = $this->reviewService->findByPublisher($profile);
-			foreach($reviews as $review){
-				$recensioni[$counter]=$this->reviewService->viewSerialize($review);
-				$counter++;
+				if($username==$_SESSION["username"]){
+					$canFollow=false;
+				}else{
+					$canFollow=true;
+					$follow = $this->userService->ifFollowWithUsername($_SESSION["username"], $username);
+				}
+				$profile = $this->userService->findUserByUsername($username);
+				$reviews = $this->reviewService->findByPublisher($profile);
+				foreach($reviews as $review){
+					$recensioni[$counter]=$this->reviewService->viewSerialize($review);
+					$counter++;
+				}
 			}
 		}else{
 			header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."login");

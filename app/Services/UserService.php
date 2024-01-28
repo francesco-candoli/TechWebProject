@@ -163,4 +163,23 @@ class UserService extends DatabaseService
       return $followed;
    }
 
+   public function ifFollowWithUsername($following_username, $followed_username){
+      $following_user = $this->findUserByUsername($following_username);
+      $followed_user = $this->findUserByUsername($followed_username);
+
+      if($following_user==null || $followed_user== null){
+         return false;
+      }
+
+      $stmt = $this->connection->prepare("SELECT * FROM follow WHERE following_user_id=? AND followed_user_id=?");
+      $stmt->execute([$following_user->getID(), $followed_user->getID()]);
+
+      if($stmt->rowCount()==0){
+         return false;
+      }
+
+      return true;
+
+   }
+
 }
