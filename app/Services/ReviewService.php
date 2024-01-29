@@ -3,11 +3,11 @@
 
 namespace App\Services;
 
-use App\Models\LikeActions;
 use App\Models\User;
 use App\Models\Review;
-use App\Services\CommentService;
 use App\Models\Comment;
+use App\Services\CommentService;
+use App\Services\LikeActionsService;
 use App\Services\UserService;
 use App\Authentication\Session;
 
@@ -18,6 +18,7 @@ class ReviewService extends DatabaseService
   private $userService;
   private $restaurantService;
   private $photoService;
+  private $likeActionsService;
 
   function __construct()
   {
@@ -26,6 +27,7 @@ class ReviewService extends DatabaseService
     $this->userService = new UserService();
     $this->restaurantService= new RestaurantService();
     $this->photoService = new PhotoService();
+    $this->likeActionsService = new LikeActionsService();
   }
 
   public function findReviewById(int $id)
@@ -92,7 +94,8 @@ class ReviewService extends DatabaseService
       'publisher' => $this->userService->findUserById($review->getPublisherId()),
       'restaurant' => $this->restaurantService->findRestaurantById($review->getRestaurantId()),
       'comments' => $this->findCommentsFromReview($review),
-      'likes' => $this->getLike($review)
+      'likes' => $this->getLike($review),
+      'liked' => $this->likeActionsService->isReviewLikedByLoggedUser($review->getId())
     ];
 
     return $data;
@@ -116,7 +119,6 @@ class ReviewService extends DatabaseService
   {
     $stmt = $this->connection->prepare("SELECT * FROM like_actions WHERE review_id=?");
     $stmt->execute([$review->getId()]);
-    
 
     if($stmt->rowCount() == 0) {
       return null;
@@ -126,8 +128,8 @@ class ReviewService extends DatabaseService
       $like[$i] = $this->userService->findUserById($row["user_id"]);
       $i++;
     }
-    return $like;
 
+    return $like;
   }
 
   public function findCommentsFromReview(Review $review){

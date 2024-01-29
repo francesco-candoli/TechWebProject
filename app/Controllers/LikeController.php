@@ -17,14 +17,12 @@ class LikeController extends Controller
         $this->likeActionsService= new LikeActionsService();
     }
 
-    public function add(string $user_id_review_id ,RouteCollection $routes){
-        $id=explode("_",$user_id_review_id);
-        $this->likeActionsService->addLike(intval($id[0]),intval($id[1]));
-    }
-
-
-    public function delete(int $like_id, RouteCollection $routes){
-            $this->likeActionsService->deleteLikeById($like_id);      
+    public function index(string $user_id_review_id ,RouteCollection $routes){
+        if($this->authManager->login_check()){
+            $id=explode("_",$user_id_review_id);
+            $this->likeActionsService->changeStatusOfLike(intval($id[0]),intval($id[1]));
+        }
+        
     }
 
 
