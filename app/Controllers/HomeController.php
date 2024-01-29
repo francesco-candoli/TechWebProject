@@ -27,13 +27,23 @@ class HomeController extends Controller
 
 		if($this->authManager->login_check()){
 			$follows= $this->userService->findFollowedByUserId($_SESSION["user_id"]);
-			foreach($follows as $follow){
-				$reviews = $this->reviewService->findByPublisher($follow);
+			if($follows!=null){
+				foreach($follows as $follow){
+					$reviews = $this->reviewService->findByPublisher($follow);
+					foreach($reviews as $review){
+						$recensioni[$counter]=$this->reviewService->viewSerialize($review);
+						$counter++;
+					}
+				}
+			}else{
+				$reviews = $this->reviewService->findLastRecent(2);
+	
 				foreach($reviews as $review){
 					$recensioni[$counter]=$this->reviewService->viewSerialize($review);
 					$counter++;
 				}
 			}
+			
 		}else{
 			$reviews = $this->reviewService->findLastRecent(2);
 	
