@@ -39,9 +39,11 @@ class ProfileController extends Controller
 				}
 				$profile = $this->userService->findUserByUsername($username);
 				$reviews = $this->reviewService->findByPublisher($profile);
-				foreach($reviews as $review){
-					$recensioni[$counter]=$this->reviewService->viewSerialize($review);
-					$counter++;
+				if($reviews != null){
+					foreach($reviews as $review){
+						$recensioni[$counter]=$this->reviewService->viewSerialize($review);
+						$counter++;
+					}
 				}
 			}
 		}else{
@@ -50,6 +52,14 @@ class ProfileController extends Controller
 
         require_once APP_ROOT . '/views/home.php';
 	}
+
+	public function changeFollowStatus(int $user_id, RouteCollection $routes){
+		if($this->authManager->login_check()){
+            $this->userService->changeFollowStatus($user_id);
+        }
+	}
+
+	
 
   
 }

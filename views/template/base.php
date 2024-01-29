@@ -59,7 +59,7 @@
             <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5">
             <?php if ($canFollow): ?>
               <hr class="border border-light">
-              <a href="#" class="btn btn-outline-primary"><?php if($follow) echo "Unfollow"; else echo "Follow";?></a>
+              <button class="btn btn-outline-primary" onclick="changeFollowStatus(<?php echo $profile->getId();?>)"><?php if($follow) echo "Unfollow"; else echo "Follow";?></button>
             <?php endif; ?>
             <hr class="border border-dark">
             <p><?php echo "Età: ".$profile->getAge()." - Sesso: ".strtoupper($profile->getSex()); ?></p>
@@ -88,7 +88,7 @@
                 <!--header-->
                 <div class="card-header">
                   <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$post["publisher"]->getProfileImageSrc(); ?>" class="rounded-circle col-2">
-                  <a href="#" class="text-decoration-none text-dark"><?php echo $post["publisher"]->getUsername(); ?></a>
+                  <a href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/".$post["publisher"]->getUsername(); ?>" class="text-decoration-none text-dark"><?php echo $post["publisher"]->getUsername(); ?></a>
                 </div>
 
                 <?php if(isset($post["photo"][0])): ?>
@@ -220,10 +220,10 @@
           alert("Request failed");
         };
         window.location.reload();
+        window.location.reload();
       }
 
       function changeStatusOfLike(user_id, review_id){
-        console.log(user_id+"_"+review_id);
         // 1. Crea un nuovo oggetto XMLHttpRequest
         let xhr = new XMLHttpRequest();
         // 2. Lo configura: richiesta GET per l'URL /article/.../load
@@ -241,6 +241,30 @@
         xhr.onerror = function() {
           alert("Request failed");
         };
+        window.location.reload();
+        window.location.reload();
+      }
+
+      function changeFollowStatus(user_id){
+        
+        // 1. Crea un nuovo oggetto XMLHttpRequest
+        let xhr = new XMLHttpRequest();
+        // 2. Lo configura: richiesta GET per l'URL /article/.../load
+        xhr.open('GET', '<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER; ?>follow/changeStatus/'+user_id);
+        // 3. Invia la richiesta alla rete
+        xhr.send();
+        // 4. Questo codice viene chiamato dopo la ricezione della risposta
+        xhr.onload = function() {
+          if (xhr.status != 200) { // analizza lo status HTTP della risposta
+            alert(`Error ${xhr.status}: ${xhr.statusText}`); // ad esempio 404: Not Found
+          } else { // mostra il risultato
+            //alert(`Done, ${xhr.response}`); // response contiene la risposta del server
+          }
+        };
+        xhr.onerror = function() {
+          alert("Request failed");
+        };
+        window.location.reload();
         window.location.reload();
       }
 
@@ -330,7 +354,10 @@
     const search_button = document.getElementById("search_button");
     const search_label = document.getElementById("search_label");
     search_button.addEventListener("click",function() {
-      window.location.assign(profileURL.concat(search_label.value))
+      if(search_label.value != ""){
+        window.location.assign(profileURL.concat(search_label.value));
+      }
+      
     });
 
  

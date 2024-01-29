@@ -180,4 +180,24 @@ class UserService extends DatabaseService
 
    }
 
+   public function changeFollowStatus(int $user_id){
+      $stmt = $this->connection->prepare("SELECT * FROM follow WHERE following_user_id=? AND followed_user_id=?");
+      $stmt->execute([$_SESSION["user_id"], $user_id]);
+      if($stmt->rowCount() == 0) {
+         $this->addFollow($_SESSION["user_id"], $user_id);
+      }else{
+         $this->deleteFollow($_SESSION["user_id"], $user_id);
+      }
+   }
+
+   private function addFollow(int $following_user_id,int $followed_user_id){
+      $stmt = $this->connection->prepare("INSERT INTO follow (following_user_id,followed_user_id) VALUES (?, ?)");
+      $stmt->execute([$following_user_id, $followed_user_id]);
+	}
+
+	private function deleteFollow(int $following_user_id,int $followed_user_id){
+      $stmt = $this->connection->prepare("DELETE FROM follow WHERE following_user_id=? AND followed_user_id=?");
+      $stmt->execute([$following_user_id, $followed_user_id]);	
+	}
+
 }
