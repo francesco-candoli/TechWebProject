@@ -79,8 +79,10 @@ class ReviewService extends DatabaseService
     $res = $this->findReviewById($review->getId());
     if ($res == null) {
       $this->insertReview($review);
+      return $this->connection->lastInsertId();
     } else {
       $this->updateReview($review);
+      return $review->getId();
     }
 
   }

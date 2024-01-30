@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Authentication\AuthenticationManager;
+use App\Models\Restaurant;
 use App\Models\Review;
 use App\Models\Photo;
 use App\Services\PhotoService;
@@ -38,7 +39,12 @@ class UploadController extends Controller
         //controllo nome ristorante inserito
         $restaurant=$this->restaurantService->findRestaurantByName($_POST["ristorante"]);
         if($restaurant==null){
-            header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."upload");
+            if(!isset($_POST["indirizzo"])){
+                $_SESSION["upload_error"]="non è stato pseicifcato l'indirizzo del ristorante!";
+                header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."upload/");
+            }
+            $new_restaurant_id=$this->restaurantService->save(new Restaurant(-1,$_POST["ristorante"], "address"));
+            $restaurant=$this->restaurantService->findRestaurantById($new_restaurant_id);
         }
 
 
@@ -46,11 +52,11 @@ class UploadController extends Controller
         if(isset($_FILES['fileup'])) {
             for($i=0;$i<count($_FILES['fileup']['name']);$i++){
                 if($_FILES['fileup']['name'][$i]!=""){
-                    $photoFullPath=$this->uploadImage($_SERVER['DOCUMENT_ROOT']."/".URL_SUBFOLDER."public/images/review/",$_FILES['fileup']["name"][$i],$_FILES['fileup']["tmp_name"][$i]);
+                    $photoFullPath=$this->uploadImage($_SERVER['DOCUMENT_ROOT']."/".URL_SUBFOLDER.REVIEW_IMAGE_PATH,$_FILES['fileup']["name"][$i],$_FILES['fileup']["tmp_name"][$i]);
                     if($photoFullPath!="err"){
                         $photoExp=explode("/",$photoFullPath);
                         $photoName=end($photoExp);
-                        $photoSrc="public/images/review/".$photoName;
+                        $photoSrc=REVIEW_IMAGE_PATH.$photoName;
                         array_push($photos,$photoSrc);
                     }
                     
@@ -58,8 +64,7 @@ class UploadController extends Controller
             }
         }
         if(count($photos)!=0){
-            $this->reviewService->save(new Review(-1, $_POST["content"], $_POST["vote"], $restaurant->getId(), $_SESSION["user_id"]));
-            $lastId=$this->reviewService->getLastId();
+            $lastId=$this->reviewService->save(new Review(-1, $_POST["content"], $_POST["vote"], $restaurant->getId(), $_SESSION["user_id"]));
             foreach($photos as $src){
                 $this->photoService->save(new Photo(-1, $src, "standard-alt",$lastId));
             }

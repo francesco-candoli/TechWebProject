@@ -50,9 +50,12 @@ class RestaurantService extends DatabaseService
     $res= $this->findRestaurantById($restaurant->getId());
     if($res==null){
         $this->insertRestaurant($restaurant);
+        return $this->connection->lastInsertId();
     }else{
         $this->updateRestaurant($restaurant);
+        return $restaurant->getId();
     }
+
     
    }
 }
