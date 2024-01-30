@@ -82,7 +82,6 @@
       <!--Recensione-->
       <?php if (isset($recensioni)): ?>
         <?php foreach($recensioni as $post): ?>
-          <?php var_dump($post['photo']);?>
           <div class="container col-12 col-sm-6">
             <div class="justify-content-sm-center">
 
@@ -91,7 +90,7 @@
                 <!--header-->
                 <div class="card-header">
                   <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$post["publisher"]->getProfileImageSrc(); ?>" class="rounded-circle col-2">
-                  <a href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/".$post["publisher"]->getUsername(); ?>" class="text-decoration-none text-dark"><?php echo $post["publisher"]->getUsername(); ?></a>
+                  <a href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/".$post["publisher"]->getUsername(); ?>" class="text-decoration-none text-dark" ><?php echo $post["publisher"]->getUsername(); ?></a>
                 </div>
 
                 <?php if(isset($post["photo"][0])): ?>
@@ -373,6 +372,8 @@
       }
       
     });
+
+    
       
 
  
