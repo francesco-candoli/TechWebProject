@@ -33,9 +33,11 @@ class ProfileController extends Controller
 			}else{
 				if($username==$_SESSION["username"]){
 					$canFollow=false;
+					$canPost=true;
 				}else{
 					$canFollow=true;
 					$follow = $this->userService->ifFollowWithUsername($_SESSION["username"], $username);
+					$canPost=false;
 				}
 				$profile = $this->userService->findUserByUsername($username);
 				$reviews = $this->reviewService->findByPublisher($profile);

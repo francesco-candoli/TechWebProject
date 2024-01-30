@@ -26,7 +26,7 @@ class PhotoService extends DatabaseService
     return new Photo($photo["id"], $photo["src"], $photo["alt"], $photo["review_id"]);
    }
 
-   private function insertPhoto(Photo $photo){
+   public function insertPhoto(Photo $photo){
     $stmt = $this->connection->prepare("INSERT INTO photo (src, alt, review_id) VALUES (?,?,?)")->execute([$photo->getSrc(), $photo->getAlt(), $photo->getReviewId()]);
    }
 

@@ -252,33 +252,6 @@ INSERT INTO `review` (`id`, `content`, `vote`, `restaurant_id`, `publisher_id`) 
 (3, 'content', 4, 9, 3),
 (4, 'content', 1, 3, 1);
 
---
--- Trigger `review`
---
-DELIMITER $$
-CREATE TRIGGER `ReviewNotification` AFTER INSERT ON `review` FOR EACH ROW BEGIN
-	declare done int DEFAULT false;
-    declare ids int;
-    declare new_notification_id int;
-    declare cur cursor for SELECT following_user_id FROM follow WHERE followed_user_id= NEW.publisher_id;
-    set @new_notification_id := (SELECT MAX(id) FROM notification);
-            insert into notification VALUES((@new_notification_id+1),CONCAT("L'utente: ",(SELECT username FROM user WHERE id=NEW.publisher_id)," ha pubblicato una nuova recensione"),'');
-            
-    OPEN cur;
-    	ins_loop: LOOP
-        	FETCH cur INTO ids;
-            if done THEN
-            	LEAVE ins_loop;
-            end IF;
-            insert into has_notification (user_id, notification_id) VALUES (ids,(@new_notification_id)); 
-        end loop;
-    close cur;
-            	
-    
-END
-$$
-DELIMITER ;
-
 -- --------------------------------------------------------
 
 --

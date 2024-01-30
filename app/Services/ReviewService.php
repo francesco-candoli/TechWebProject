@@ -64,9 +64,9 @@ class ReviewService extends DatabaseService
     return $reviews;
   }
 
-  private function insertReview(Review $review)
+  public function insertReview(Review $review)
   {
-    $stmt = $this->connection->prepare("INSERT INTO review (content, vote, restaurant_id, publisher_id) VALUES (?,?,?,?)")->execute([$review->getContent(), $review->getVote(), $review->getRestaurantId(), $review->getPublisherId()]);
+    $stmt = $this->connection->prepare("INSERT INTO review (content, vote, restaurant_id, publisher_id) VALUES (?,?,?,?);")->execute([$review->getContent(), $review->getVote(), $review->getRestaurantId(), $review->getPublisherId()]);
   }
 
   private function updateReview(Review $review)
@@ -146,6 +146,13 @@ class ReviewService extends DatabaseService
     }
 
     return $comments;
+  }
 
-}
+  public function getLastId(){
+    $stmt = $this->connection->prepare("SELECT * FROM review ORDER BY id DESC");
+    $stmt->execute();
+    $review = $stmt->fetch();
+
+    return $review["id"];
+  }
 }

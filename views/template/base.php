@@ -1,7 +1,5 @@
 <?php
 
-  //mandare variabile allo script js
-
 ?>
 
 <!doctype html>
@@ -61,6 +59,10 @@
               <hr class="border border-light">
               <button class="btn btn-outline-primary" onclick="changeFollowStatus(<?php echo $profile->getId();?>)"><?php if($follow) echo "Unfollow"; else echo "Follow";?></button>
             <?php endif; ?>
+            <?php if ($canPost): ?>
+              <hr class="border border-light">
+              <a href=<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."upload"?> class="btn btn-outline-primary">Post</a>
+            <?php endif; ?>
             <hr class="border border-dark">
             <p><?php echo "Età: ".$profile->getAge()." - Sesso: ".strtoupper($profile->getSex()); ?></p>
             <hr class="border border-dark">
@@ -80,6 +82,7 @@
       <!--Recensione-->
       <?php if (isset($recensioni)): ?>
         <?php foreach($recensioni as $post): ?>
+          <?php var_dump($post['photo']);?>
           <div class="container col-12 col-sm-6">
             <div class="justify-content-sm-center">
 
@@ -95,23 +98,29 @@
                 <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$post["photo"][0]->getSrc(); ?>" class="card-img-center" alt="..."  id="review_image">
                   <div class="d-flex justify-content-center align-content-center" id="image-slider">
                     <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="left-slider">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"/>
                       </svg>
                     </button>
                     <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="right-slider">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8m-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5"/>
                       </svg>
                     </button>
                   </div>
                 <?php endif; ?>
+
                 <!--body-->
                 <div class="card-body">
 
                   <!--recensione-->
-                  <div class="text-center">
-                    <a href="#" class="text-decoration-none text-dark"><?php echo $post["restaurant"]->getName(); ?></a>
+                  <div class="text-center mb-2">
+                    <p class="text-dark mb-0"><?php echo $post["restaurant"]->getName(); ?></p>
+                    <?php for($i=0; $i<$post["review"]->getVote();$i++):?>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F6831D" class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                      </svg>
+                    <?php endfor;?>
                   </div>
                   <div class="overflow-y-auto border border-black mb-2" style="max-height: 5em;">
                     <p class="ms-2"><?php echo $post["review"]->getContent(); ?></p>
@@ -274,28 +283,30 @@
       <?php
       $c=0;
       $y=0;
+      if(isset($recensioni)){
+        echo "const photos=[";
 
-      echo "const photos=[";
-
-      foreach($recensioni as $post){ 
-        if($c!=0){
-          echo ",";
-        }
-        $c++;
-        echo "[";
-        foreach($post["photo"] as $photo){
-          if($y!=0){
+        foreach($recensioni as $post){ 
+          if($c!=0){
             echo ",";
           }
-          $y++;
-          echo "'". PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$photo->getSrc()."'";
-          
+          $c++;
+          echo "[";
+          foreach($post["photo"] as $photo){
+            if($y!=0){
+              echo ",";
+            }
+            $y++;
+            echo "'". PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$photo->getSrc()."'";
+            
+          }
+          echo "]";
+          $y=0;
         }
-        echo "]";
-        $y=0;
+        echo "];";
+        echo "const profileURL = '".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/'";
       }
-      echo "];";
-      echo "const profileURL = '".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/'";
+
       ?>
 
     const leftSliders = document.querySelectorAll("#left-slider");
@@ -304,6 +315,8 @@
 
     for (let i = 0; i < leftSliders.length; i++) {
         leftSliders[i].addEventListener("click", function () {
+          console.log(photos[4]);
+          console.log("searching "+ image[i].getAttribute("src") + " in " + (photos[i]))
             let index = photos[i].indexOf(image[i].getAttribute("src"));
             if (index > 0) {
                 index = (index - 1);
@@ -312,6 +325,7 @@
         })
 
         rightSliders[i].addEventListener("click", function () {
+          console.log("right slider clicked");
             let index = photos[i].indexOf(image[i].getAttribute("src"));
             if (index < (photos[i].length - 1)) {
                 index = index + 1;
@@ -359,6 +373,7 @@
       }
       
     });
+      
 
  
     </script>
