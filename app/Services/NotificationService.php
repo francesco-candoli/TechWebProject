@@ -44,4 +44,6 @@ class NotificationService extends DatabaseService
       $stmt = $this->connection->prepare("DELETE FROM notification WHERE id=?");
       $stmt->execute([$id]);
    }
+
+   
 }

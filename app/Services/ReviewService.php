@@ -64,7 +64,7 @@ class ReviewService extends DatabaseService
     return $reviews;
   }
 
-  public function insertReview(Review $review)
+  private function insertReview(Review $review)
   {
     $stmt = $this->connection->prepare("INSERT INTO review (content, vote, restaurant_id, publisher_id) VALUES (?,?,?,?);")->execute([$review->getContent(), $review->getVote(), $review->getRestaurantId(), $review->getPublisherId()]);
   }

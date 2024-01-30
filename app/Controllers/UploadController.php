@@ -47,20 +47,24 @@ class UploadController extends Controller
             for($i=0;$i<count($_FILES['fileup']['name']);$i++){
                 if($_FILES['fileup']['name'][$i]!=""){
                     $photoFullPath=$this->uploadImage($_SERVER['DOCUMENT_ROOT']."/".URL_SUBFOLDER."public/images/review/",$_FILES['fileup']["name"][$i],$_FILES['fileup']["tmp_name"][$i]);
-                    if($photoFullPath=="err")
-                    $photoExp=explode("/",$photoFullPath);
-                    $photoName=end($photoExp);
-                    $photoSrc="public/images/review/".$photoName;
-                    array_push($photos,$photoSrc);
+                    if($photoFullPath!="err"){
+                        $photoExp=explode("/",$photoFullPath);
+                        $photoName=end($photoExp);
+                        $photoSrc="public/images/review/".$photoName;
+                        array_push($photos,$photoSrc);
+                    }
+                    
                 }
             }
         }
-
-        $this->reviewService->insertReview(new Review(0, $_POST["content"], $_POST["vote"], $restaurant->getId(), $_SESSION["user_id"]));
-        $lastId=$this->reviewService->getLastId();
-        foreach($photos as $src){
-            $this->photoService->insertPhoto(new Photo(0, $src, "standard-alt",$lastId));
+        if(count($photos)!=0){
+            $this->reviewService->save(new Review(-1, $_POST["content"], $_POST["vote"], $restaurant->getId(), $_SESSION["user_id"]));
+            $lastId=$this->reviewService->getLastId();
+            foreach($photos as $src){
+                $this->photoService->save(new Photo(-1, $src, "standard-alt",$lastId));
+            }
         }
+        
 
         header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/".$_SESSION["username"]);
     }
