@@ -75,7 +75,8 @@ class ProfileController extends Controller
 	}
 
 	public function deleteProfileImage(RouteCollection $routes){
-		$this->userService->updateProfilePhoto($_SESSION["user_id"],PROFILE_IMAGE_PATH.DEFAULT_PROFILE_IMAGE);
+		$oldPhotoSrc=$this->userService->updateProfilePhoto($_SESSION["user_id"],PROFILE_IMAGE_PATH.DEFAULT_PROFILE_IMAGE);
+		unlink($_SERVER['DOCUMENT_ROOT']."/".URL_SUBFOLDER.$oldPhotoSrc);
 		header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/".$_SESSION["username"]);
 	}
 

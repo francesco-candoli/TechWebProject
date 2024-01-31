@@ -52,7 +52,11 @@ class UserService extends DatabaseService
    }
 
    public function updateProfilePhoto(int $user_id, string $newSrc){
+      $oldPhotoSrc = $this->findUserById($user_id)->getProfileImageSrc();
       $stmt = $this->connection->prepare("UPDATE user SET profile_image_src = ? WHERE id = ?;")->execute([$newSrc, $user_id]);
+
+      //restituisce Src della foto rimossa
+      return $oldPhotoSrc;
    }
 
    public function login($username, $password)
