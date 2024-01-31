@@ -59,14 +59,14 @@
     </div>
   </nav>
   <main>
-    <br />
+    <br>
 
       <!--Profilo-->
       <div class="container col-12 col-sm-6">
         <div class="text-center">
           <?php if (isset($profile)): ?>
             <h1 class="align-middle">@<?php echo $profile->getUsername(); ?></h1>
-            <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5">
+            <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5"  alt="profile image">
             <?php if ($canFollow): ?>
               <hr class="border border-light">
               <button class="btn btn-warning text-dark border-black" onclick="changeFollowStatus(<?php echo $profile->getId();?>)"><?php if($follow) echo "Unfollow"; else echo "Follow";?></button>
@@ -77,7 +77,7 @@
               <button class="btn btn-warning text-dark border-black" id="change_profile_photo_btn">Cambia foto profilo</button>
               <div class="my-2 border border-black rounded bg-warning-subtle" id="change_profile_photo_form" style="display:none">
                 <form action="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."changeProfileImage" ?>" method="POST" enctype="multipart/form-data" class="my-2" >
-                  <label for="profileImage">Nuova foto:</label> <input type="file" name="profileImage" id="profileImage"required/><br>
+                  <label for="profileImage">Nuova foto:</label> <input type="file" name="profileImage" id="profileImage" required><br>
                   <button type="submit" class="btn btn-outline-dark mt-2">Carica</button>
                 </form>
                 <button class="btn btn-danger mb-2" onclick="deleteProfileImage()">Elimina</button>
@@ -104,7 +104,9 @@
 
     <!--Recensione-->
     <?php if (isset($recensioni)): ?>
+      <?php $index=0; ?>
       <?php foreach ($recensioni as $post): ?>
+        <?php $index++; ?>
         <div class="container col-12 col-sm-6">
           <div class="justify-content-sm-center">
 
@@ -113,7 +115,7 @@
               <!--header-->
               <div class="card-header">
                 <img src="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . $post["publisher"]->getProfileImageSrc(); ?>"
-                  class="rounded-circle col-2">
+                  class="rounded-circle col-2" alt="profile image">
                 <a href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "profile/" . $post["publisher"]->getUsername(); ?>"
                   class="text-decoration-none text-dark">
                   <?php echo $post["publisher"]->getUsername(); ?>
@@ -122,16 +124,16 @@
 
               <?php if (isset($post["photo"][0])): ?>
                 <img src="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . $post["photo"][0]->getSrc(); ?>"
-                  class="card-img-center" alt="..." id="review_image">
-                <div class="d-flex justify-content-center align-content-center" id="image-slider">
-                  <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="left-slider">
+                  class="card-img-center" alt="<?php echo $post["photo"][0]->getAlt(); ?>"  id="<?php echo "review_image".$index ?>">
+                <div class="d-flex justify-content-center align-content-center">
+                  <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="<?php echo "left_slider".$index; ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-arrow-bar-left"
                       viewBox="0 0 16 16">
                       <path fill-rule="evenodd"
                         d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5" />
                     </svg>
                   </button>
-                  <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="right-slider">
+                  <button type="button" class="btn btn-outline-secondary d-flex p-3 m-2" id="<?php echo "right_slider".$index; ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-arrow-bar-right"
                       viewBox="0 0 16 16">
                       <path fill-rule="evenodd"
@@ -166,9 +168,9 @@
                 <!--commenti-->
                 <?php if (isset($post["comments"])): ?>
                   <div class="text-center">
-                    <p class="btn btn-outline-primary" id="comment_hider">Vedi Commenti</p>
+                    <p class="btn btn-outline-primary" id="<?php echo "comment_hider".$index ?>">Vedi Commenti</p>
                   </div>
-                  <div id="comment_div" style="display: none">
+                  <div id="<?php echo "comment_div".$index ?>" style="display: none">
                     <div class="overflow-y-auto border border-black" style="max-height: 5em; display:block">
                       <?php foreach ($post["comments"] as $comment): ?>
                         <p class="ms-2 my-0" style="display: inline-block;">
@@ -186,9 +188,9 @@
                 <!--Like-->
                 <?php if (isset($post["likes"])): ?>
                   <div class="text-center mt-2 mb-0">
-                    <p class="btn btn-outline-danger" id="like_hider">Vedi Like</p>
+                    <p class="btn btn-outline-danger" id="<?php echo "like_hider".$index ?>">Vedi Like</p>
                   </div>
-                  <div id="like_div" style="display:none">
+                  <div id="<?php echo "like_div".$index ?>" style="display:none">
                     <div class="overflow-y-auto border border-black" style="max-height: 5em; display:block">
                       <?php foreach ($post["likes"] as $like): ?>
                         <p class="ms-2 my-0">
@@ -210,9 +212,9 @@
                         else
                           echo "Like"; ?>
                       </button>
-                      <button class="btn btn-outline-primary" id="comment_button"
+                      <button class="btn btn-outline-primary" name="comment_button"
                         style="display:inline-block" onclick="addComment(<?php echo $post['review']->getId() ?>)">Commenta</button>
-                      <input type="text" id="comment_label" style="display:inline-block" />
+                      <input type="text" id="comment_label" style="display:inline-block" >
                     </div>
                   </div>
                 <?php endif; ?>
@@ -412,7 +414,86 @@
 
     ?>
 
+<<<<<<< HEAD
     
+=======
+const leftSliders = document.querySelectorAll('[id^="left_slider"]');
+    const rightSliders = document.querySelectorAll('[id^="right_slider"]');
+    const image = document.querySelectorAll('[id^="review_image"]');
+
+    for (let i = 0; i < leftSliders.length; i++) {
+      leftSliders[i].addEventListener("click", function () {
+        console.log(photos[4]);
+        console.log("searching " + image[i].getAttribute("src") + " in " + (photos[i]))
+        let index = photos[i].indexOf(image[i].getAttribute("src"));
+        if (index > 0) {
+          index = (index - 1);
+          image[i].setAttribute("src", photos[i][index]);
+        }
+      })
+
+      rightSliders[i].addEventListener("click", function () {
+        console.log("right slider clicked");
+        let index = photos[i].indexOf(image[i].getAttribute("src"));
+        if (index < (photos[i].length - 1)) {
+          index = index + 1;
+          image[i].setAttribute("src", photos[i][index]);
+        }
+      })
+    }
+
+    // COMMENTI
+    const comment_hiders = document.querySelectorAll('[id^="comment_hider"]');
+    const comment_divs = document.querySelectorAll('[id^="comment_div"]');
+    for (let i = 0; i < comment_hiders.length; i++) {
+      comment_hiders[i].addEventListener("click", function () {
+        if (comment_divs[i].getAttribute("style") == "") {
+          comment_divs[i].setAttribute("style", "display:none");
+          comment_hiders[i].setAttribute("class", "btn btn-outline-primary");
+        } else {
+          comment_divs[i].setAttribute("style", "");
+          comment_hiders[i].setAttribute("class", "btn btn-primary");
+        }
+      })
+    }
+
+    // LIKE
+    const like_hiders = document.querySelectorAll('[id^="like_hider"]');
+    const like_divs = document.querySelectorAll('[id^="like_div"]');
+    for (let i = 0; i < like_hiders.length; i++) {
+      like_hiders[i].addEventListener("click", function () {
+        if (like_divs[i].getAttribute("style") == "") {
+          like_divs[i].setAttribute("style", "display:none");
+          like_hiders[i].setAttribute("class", "btn btn-outline-danger");
+        } else {
+          like_divs[i].setAttribute("style", "");
+          like_hiders[i].setAttribute("class", "btn btn-danger");
+        }
+      })
+    }
+
+    //SEARCH BUTTON
+    const search_button = document.getElementById("search_button");
+    const search_label = document.getElementById("search_label");
+    search_button.addEventListener("click", function () {
+      if (search_label.value != "") {
+        window.location.assign(profileURL.concat(search_label.value));
+      }
+
+    });
+
+    //PROFILE PHOTO BUTTON
+    const profile_photo_btn = document.getElementById("change_profile_photo_btn");
+    const profile_photo_form = document.getElementById("change_profile_photo_form");
+    profile_photo_btn.addEventListener("click", function () {
+      if (profile_photo_form.getAttribute("style") == "") {
+        profile_photo_form.setAttribute("style", "display:none");
+      } else {
+        profile_photo_form.setAttribute("style", "");
+      }
+    })
+
+>>>>>>> 97cf728f4bbcb124995c8330f10e7b12127014b6
 
   </script>
   <script src="public/js/index.js"></script>
