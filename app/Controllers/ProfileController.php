@@ -67,7 +67,12 @@ class ProfileController extends Controller
 			$photoExp=explode("/",$photoFullPath);
 			$photoName=end($photoExp);
 			$newPhotoSrc=PROFILE_IMAGE_PATH.$photoName;
-			$this->userService->updateProfilePhoto($_SESSION["user_id"],$newPhotoSrc);
+
+			$oldPhotoSrc=$this->userService->updateProfilePhoto($_SESSION["user_id"],$newPhotoSrc);
+			
+			if($oldPhotoSrc!=PROFILE_IMAGE_PATH.DEFAULT_PROFILE_IMAGE){
+				unlink($_SERVER['DOCUMENT_ROOT']."/".URL_SUBFOLDER.$oldPhotoSrc);
+			}
 		}
 		
 
