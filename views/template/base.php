@@ -57,11 +57,19 @@
             <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5">
             <?php if ($canFollow): ?>
               <hr class="border border-light">
-              <button class="btn btn-outline-primary" onclick="changeFollowStatus(<?php echo $profile->getId();?>)"><?php if($follow) echo "Unfollow"; else echo "Follow";?></button>
+              <button class="btn btn-warning text-dark border-black" onclick="changeFollowStatus(<?php echo $profile->getId();?>)"><?php if($follow) echo "Unfollow"; else echo "Follow";?></button>
             <?php endif; ?>
             <?php if ($canPost): ?>
               <hr class="border border-light">
-              <a href=<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."upload"?> class="btn btn-outline-primary">Post</a>
+              <a href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."upload"?>" class="btn btn-warning text-dark border-black">Post</a>
+              <button class="btn btn-warning text-dark border-black" id="change_profile_photo_btn">Cambia foto profilo</button>
+              <div class="my-2 border border-black rounded bg-warning-subtle" id="change_profile_photo_form" style="display:none">
+                <form action="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."changeProfileImage" ?>" method="POST" enctype="multipart/form-data" class="my-2" >
+                  <label for="profileImage">Nuova foto:</label> <input type="file" name="profileImage" id="profileImage"required/><br>
+                  <button type="submit" class="btn btn-outline-dark mt-2">Carica</button>
+                </form>
+                <button class="btn btn-danger mb-2" onclick="deleteProfileImage()">Elimina</button>
+              </div>
             <?php endif; ?>
             <hr class="border border-dark">
             <p><?php echo "Età: ".$profile->getAge()." - Sesso: ".strtoupper($profile->getSex()); ?></p>
@@ -276,6 +284,29 @@
         window.location.reload();
       }
 
+      function deleteProfileImage(){
+        
+        // 1. Crea un nuovo oggetto XMLHttpRequest
+        let xhr = new XMLHttpRequest();
+        // 2. Lo configura: richiesta GET per l'URL /article/.../load
+        xhr.open('GET', '<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER; ?>deleteProfileImage');
+        // 3. Invia la richiesta alla rete
+        xhr.send();
+        // 4. Questo codice viene chiamato dopo la ricezione della risposta
+        xhr.onload = function() {
+          if (xhr.status != 200) { // analizza lo status HTTP della risposta
+            alert(`Error ${xhr.status}: ${xhr.statusText}`); // ad esempio 404: Not Found
+          } else { // mostra il risultato
+            //alert(`Done, ${xhr.response}`); // response contiene la risposta del server
+          }
+        };
+        xhr.onerror = function() {
+          alert("Request failed");
+        };
+        window.location.reload();
+        window.location.reload();
+      }
+
     </script>
 
     <script>
@@ -373,8 +404,16 @@
       
     });
 
-    
-      
+    //PROFILE PHOTO BUTTON
+    const profile_photo_btn = document.getElementById("change_profile_photo_btn");
+    const profile_photo_form = document.getElementById("change_profile_photo_form");
+    profile_photo_btn.addEventListener("click", function () {
+      if (profile_photo_form.getAttribute("style") == "") {
+        profile_photo_form.setAttribute("style", "display:none");
+      } else {
+        profile_photo_form.setAttribute("style", "");
+      }
+    })
 
  
     </script>

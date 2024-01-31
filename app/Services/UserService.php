@@ -51,6 +51,10 @@ class UserService extends DatabaseService
       $stmt = $this->connection->prepare("UPDATE user SET username= ? password ")->execute([]);
    }
 
+   public function updateProfilePhoto(int $user_id, string $newSrc){
+      $stmt = $this->connection->prepare("UPDATE user SET profile_image_src = ? WHERE id = ?;")->execute([$newSrc, $user_id]);
+   }
+
    public function login($username, $password)
    {
       // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.

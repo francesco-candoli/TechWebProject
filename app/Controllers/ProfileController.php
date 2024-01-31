@@ -61,6 +61,61 @@ class ProfileController extends Controller
         }
 	}
 
+	public function changeProfileImage(RouteCollection $routes){
+		$photoFullPath = $this->uploadImage($_SERVER['DOCUMENT_ROOT']."/".URL_SUBFOLDER.PROFILE_IMAGE_PATH,$_FILES['profileImage']["name"],$_FILES['profileImage']["tmp_name"]);
+		if($photoFullPath!="err"){
+			$photoExp=explode("/",$photoFullPath);
+			$photoName=end($photoExp);
+			$newPhotoSrc=PROFILE_IMAGE_PATH.$photoName;
+			$this->userService->updateProfilePhoto($_SESSION["user_id"],$newPhotoSrc);
+		}
+		
+
+		header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/".$_SESSION["username"]);
+	}
+
+	public function deleteProfileImage(RouteCollection $routes){
+		$this->userService->updateProfilePhoto($_SESSION["user_id"],PROFILE_IMAGE_PATH.DEFAULT_PROFILE_IMAGE);
+		header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/".$_SESSION["username"]);
+	}
+
+	private function uploadImage($path, $name, $tmp_name){
+        $allowedType = array('jpg', 'jpeg', 'png');        // allowed extensions
+        $err = '';
+        
+        $imageName = basename($name);
+        $fullPath = $path.$imageName;
+
+        $sepext = explode('.', strtolower($name));
+        $type = end($sepext);
+
+        if (file_exists($fullPath)) {
+            $i = 1;
+            do{
+                $i++;
+                $imageName = pathinfo(basename($name), PATHINFO_FILENAME)."_$i.".$type;
+            }
+            while(file_exists($path.$imageName));
+            $fullPath = $path.$imageName;
+        }
+
+        if(!in_array($type, $allowedType)) $err .= "Il file non possiede un estensione consentita";
+        //if($image["size"] > 5000 * 1024) $err .= "Il file è troppo pesante";
+
+        //Se non ci sono errori, sposto il file dalla posizione temporanea alla cartella di destinazione
+        if(strlen($err)==0){
+            if(!move_uploaded_file($tmp_name, $fullPath)){
+                $err.= "Errore nel caricamento dell'immagine.";
+            }
+        }
+        if(strlen($err)==0){
+            return ($fullPath);
+        }else{
+            return "err";
+        }
+        
+    }
+
 	
 
   
