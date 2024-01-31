@@ -208,4 +208,16 @@ class UserService extends DatabaseService
       $stmt->execute([$following_user_id, $followed_user_id]);	
 	}
 
+   public function countFollowersById(int $user_id){
+      $stmt = $this->connection->prepare("SELECT * FROM follow WHERE followed_user_id=?");
+      $stmt->execute([$user_id]);
+      return $stmt->rowCount();
+   }
+
+   public function countFollowingById(int $user_id){
+      $stmt = $this->connection->prepare("SELECT * FROM follow WHERE following_user_id=?");
+      $stmt->execute([$user_id]);
+      return $stmt->rowCount();
+   }
+
 }

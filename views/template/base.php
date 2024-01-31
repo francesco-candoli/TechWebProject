@@ -61,50 +61,35 @@
   <main>
     <br />
 
-    <!--Profilo-->
-    <div class="container col-12 col-sm-6">
-      <div class="text-center">
-        <?php if (isset($profile)): ?>
-          <h1 class="align-middle">@
-            <?php echo $profile->getUsername(); ?>
-          </h1>
-          <img src="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . $profile->getProfileImageSrc(); ?>"
-            class="rounded-circle col-5">
-          <?php if ($canFollow): ?>
-            <hr class="border border-light">
-            <button class="btn btn-warning text-dark border-black"
-              onclick="changeFollowStatus(<?php echo $profile->getId(); ?>)">
-              <?php if ($follow)
-                echo "Unfollow";
-              else
-                echo "Follow"; ?>
-            </button>
+      <!--Profilo-->
+      <div class="container col-12 col-sm-6">
+        <div class="text-center">
+          <?php if (isset($profile)): ?>
+            <h1 class="align-middle">@<?php echo $profile->getUsername(); ?></h1>
+            <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5">
+            <?php if ($canFollow): ?>
+              <hr class="border border-light">
+              <button class="btn btn-warning text-dark border-black" onclick="changeFollowStatus(<?php echo $profile->getId();?>)"><?php if($follow) echo "Unfollow"; else echo "Follow";?></button>
+            <?php endif; ?>
+            <?php if ($canPost): ?>
+              <hr class="border border-light">
+              <a href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."upload"?>" class="btn btn-warning text-dark border-black">Post</a>
+              <button class="btn btn-warning text-dark border-black" id="change_profile_photo_btn">Cambia foto profilo</button>
+              <div class="my-2 border border-black rounded bg-warning-subtle" id="change_profile_photo_form" style="display:none">
+                <form action="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."changeProfileImage" ?>" method="POST" enctype="multipart/form-data" class="my-2" >
+                  <label for="profileImage">Nuova foto:</label> <input type="file" name="profileImage" id="profileImage"required/><br>
+                  <button type="submit" class="btn btn-outline-dark mt-2">Carica</button>
+                </form>
+                <button class="btn btn-danger mb-2" onclick="deleteProfileImage()">Elimina</button>
+              </div>
+            <?php endif; ?>
+            <hr class="border border-dark">
+            <p><?php echo "Età: ".$profile->getAge()." - Sesso: ".strtoupper($profile->getSex()). " - Follower: ".$numberOfFollower." - Seguiti: ".$numberOfFollowing; ?>
+            </p>
+            <hr class="border border-dark">
           <?php endif; ?>
-          <?php if ($canPost): ?>
-            <hr class="border border-light">
-            <a href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "upload" ?>"
-              class="btn btn-warning text-dark border-black">Post</a>
-            <button class="btn btn-warning text-dark border-black" id="change_profile_photo_btn">Cambia foto
-              profilo</button>
-            <div class="my-2 border border-black rounded bg-warning-subtle" id="change_profile_photo_form"
-              style="display:none">
-              <form action="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "changeProfileImage" ?>" method="POST"
-                enctype="multipart/form-data" class="my-2">
-                <label for="profileImage">Nuova foto:</label> <input type="file" name="profileImage" id="profileImage"
-                  required /><br>
-                <button type="submit" class="btn btn-outline-dark mt-2">Carica</button>
-              </form>
-              <button class="btn btn-danger mb-2" onclick="deleteProfileImage()">Elimina</button>
-            </div>
-          <?php endif; ?>
-          <hr class="border border-dark">
-          <p>
-            <?php echo "Età: " . $profile->getAge() . " - Sesso: " . strtoupper($profile->getSex()); ?>
-          </p>
-          <hr class="border border-dark">
-        <?php endif; ?>
+        </div>
       </div>
-    </div>
 
     <!--Error-->
     <div class="container col-12 col-sm-6">
