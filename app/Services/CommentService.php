@@ -34,24 +34,29 @@ class CommentService extends DatabaseService
 
     }
 
-    private function insertComment(Comment $comment){
-        $stmt = $this->connection->prepare("INSERT INTO comment (content, review_id, publisher_id) VALUES (?,?)")->execute([$comment->getContent(), $comment->getReviewId(), $comment->getPublisherId()]);
-       }
-    
-       private function updateComment(Comment $comment){
-        $stmt = $this->connection->prepare("UPDATE restaurant SET name=?, address=? WHERE id=?")->execute([ $restaurant->getName(), $restaurant->getAddress(), $restaurant->getId()]); 
-       }
-    
-       public function save(Restaurant $restaurant){
-        $res= $this->findRestaurantById($restaurant->getId());
-        if($res==null){
-            $this->insertRestaurant($restaurant);
-        }else{
-            $this->updateRestaurant($restaurant);
+    private function insertComment(Comment $comment)
+    {
+        $stmt = $this->connection->prepare("INSERT INTO comment (content, review_id, publisher_id) VALUES (?,?,?)")->execute([$comment->getContent(), $comment->getReviewId(), $comment->getPublisherId()]);
+        return $this->connection->lastInsertId();
+    }
+
+    private function updateComment(Comment $comment)
+    {
+        $stmt = $this->connection->prepare("UPDATE comment SET content=? WHERE id=?")->execute([$comment->getContent(), $comment->getId()]);
+        return $comment->getId();
+    }
+
+    public function save(Comment $comment)
+    {
+        $res = $this->findCommentById($comment->getId());
+        if ($res == null) {
+            return $this->insertComment($comment);
+        } else {
+            return $this->updateComment($comment);
         }
-        
-       }
- 
-    
-   
+
+    }
+
+
+
 }

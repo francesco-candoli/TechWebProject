@@ -19,3 +19,4 @@ $routes->add('upload', new Route(constant('URL_SUBFOLDER') . 'upload', array('co
 $routes->add('processUpload', new Route(constant('URL_SUBFOLDER') . 'processUpload', array('controller' => 'UploadController', 'method'=>'uploadResources'), array()));
 $routes->add('changeProfileImage', new Route(constant('URL_SUBFOLDER') . 'changeProfileImage', array('controller' => 'ProfileController', 'method'=>'changeProfileImage'), array()));
 $routes->add('deleteProfileImage', new Route(constant('URL_SUBFOLDER') . 'deleteProfileImage', array('controller' => 'ProfileController', 'method'=>'deleteProfileImage'), array()));
+$routes->add('addComment/', new Route(constant('URL_SUBFOLDER') . 'addComment', array('controller' => 'CommentController', 'method'=>'add'), array()));
