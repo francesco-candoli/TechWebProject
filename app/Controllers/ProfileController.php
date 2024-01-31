@@ -40,6 +40,8 @@ class ProfileController extends Controller
 					$canPost=false;
 				}
 				$profile = $this->userService->findUserByUsername($username);
+				$numberOfFollower = $this->userService->countFollowersById($profile->getID());
+				$numberOfFollowing = $this->userService->countFollowingById($profile->getID());
 				$reviews = $this->reviewService->findByPublisher($profile);
 				if($reviews != null){
 					foreach($reviews as $review){

@@ -72,7 +72,8 @@
               </div>
             <?php endif; ?>
             <hr class="border border-dark">
-            <p><?php echo "Età: ".$profile->getAge()." - Sesso: ".strtoupper($profile->getSex()); ?></p>
+            <p><?php echo "Età: ".$profile->getAge()." - Sesso: ".strtoupper($profile->getSex()). " - Follower: ".$numberOfFollower." - Seguiti: ".$numberOfFollowing; ?>
+            </p>
             <hr class="border border-dark">
           <?php endif; ?>
         </div>
