@@ -21,4 +21,4 @@ $recensione[0]["commenti"][0]="bello";
 $recensione[0]["commenti"][1]="fa cagare";*/
 
 require 'template/base.php';
-?>
+
