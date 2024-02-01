@@ -58,9 +58,8 @@ class User{
     }
 
     public function setPassword(string $plainTextPassword){
-        $random_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
         // Crea una password usando la chiave appena creata.
-        $encryptedPassword = hash('sha512', $plainTextPassword.$random_salt);
+        $encryptedPassword = hash('sha512', $plainTextPassword.$this->getSalt());
         $this->password = $encryptedPassword;
     }
 

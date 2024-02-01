@@ -10,10 +10,11 @@ $form='
 
         <label for="password" class="form-label mt-2 mb-0">Password</label>
         <input type="password" class="form-control" id="password" name="password">
+
                               
         <div class="text-center">
             <button type="submit" class="btn btn-outline-primary my-2">Login</button>
-            <a href="registrazione.php" class="text-decoration-none" >Registrazione</button>
+            <a href="'.PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.'register" class="text-decoration-none" >Registrazione</button>
         </div>
     </form>
 </div>';

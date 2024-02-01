@@ -98,6 +98,16 @@ class ProfileController extends Controller
 		header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."profile/".$_SESSION["username"]);
 	}
 
+	public function checkUsername(string $username, RouteCollection $routes){
+		if($this->userService->findUserByUsername($username)==null){
+			http_response_code(200);
+			return "ok";
+		}else{
+			http_response_code(400);
+			return "no";
+		}
+	}
+
 	private function uploadImage($path, $name, $tmp_name){
         $allowedType = array('jpg', 'jpeg', 'png');        // allowed extensions
         $err = '';

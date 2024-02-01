@@ -46,9 +46,8 @@ class UserService extends DatabaseService
 
    public function save(User $user)
    {
-      $userFromDb= $this->findUserById($user->getID());
       
-      $stmt = $this->connection->prepare("UPDATE user SET username= ? password ")->execute([]);
+      $stmt = $this->connection->prepare("INSERT INTO user (username,password,age,sex,salt) VALUES (?,?,?,?,?)")->execute([$user->getUsername(), $user->getPassword(), $user->getAge(), $user->getSex(), $user->getSalt()]);
    }
 
    public function updateProfilePhoto(int $user_id, string $newSrc){

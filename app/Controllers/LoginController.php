@@ -26,9 +26,13 @@ class LoginController extends Controller
         $password = $_POST["password"];
 
         if($this->userService->login($username, $password)){
+           if(isset($_SESSION["login_error"])){
+                unset($_SESSION["login_error"]);
+           }
            header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."");
   
         }else{
+           $_SESSION["login_error"]="username o password errati";
            header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."login");
 
         }
