@@ -173,9 +173,6 @@
                   <div id="<?php echo "comment_div".$index ?>" style="display: none">
                     <div class="overflow-y-auto border border-black" style="max-height: 5em; display:block">
                       <?php foreach ($post["comments"] as $comment): ?>
-                        <p class="ms-2 my-0" style="display: inline-block;">
-                          <?php echo $comment->getPublisherId(); ?>:
-                        </p>
                         <p class="my-0" style="display: inline-block;">
                           <?php echo $comment->getContent(); ?>
                         </p>

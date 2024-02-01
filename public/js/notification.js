@@ -15,7 +15,7 @@ function deleteNotification(id) {
     // 1. Crea un nuovo oggetto XMLHttpRequest
     let xhr = new XMLHttpRequest();
     // 2. Lo configura: richiesta GET per l'URL /article/.../load
-    xhr.open('GET', 'https://localhost/ristoranti/TechWebProject/notifications/delete/' + id);
+    xhr.open('GET', window.location.href+'/delete/' + id);
     // 3. Invia la richiesta alla rete
     xhr.send();
     // 4. Questo codice viene chiamato dopo la ricezione della risposta
@@ -27,7 +27,7 @@ function deleteNotification(id) {
       }
     };
     xhr.onerror = function () {
-      alert("Request failed");
+      alert("error");
     };
     window.location.reload();
     window.location.reload();

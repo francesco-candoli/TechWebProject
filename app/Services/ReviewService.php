@@ -90,12 +90,19 @@ class ReviewService extends DatabaseService
   public function viewSerialize(Review $review)
   {
 
+
+    $comments=$this->findCommentsFromReview($review);
+
+    foreach($comments as $comment){
+      $comment->setContent($this->userService->findUserById($comment->getPublisherId())->getUsername().": ".$comment->getContent());
+    }
+
     $data=[
       'review' => $review,
       'photo' => $this->photoService->findPhotoByReviewId($review->getId()),
       'publisher' => $this->userService->findUserById($review->getPublisherId()),
       'restaurant' => $this->restaurantService->findRestaurantById($review->getRestaurantId()),
-      'comments' => $this->findCommentsFromReview($review),
+      'comments' =>  $comments,
       'likes' => $this->getLike($review),
       'liked' => $this->likeActionsService->isReviewLikedByLoggedUser($review->getId())
     ];
