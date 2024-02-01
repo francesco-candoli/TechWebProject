@@ -65,7 +65,7 @@ class ProfileController extends Controller
 			header("Location: ".PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."login");
 		}
 
-        require_once APP_ROOT . '/views/home.php';
+        require_once APP_ROOT . '/views/profile.php';
 	}
 
 	public function changeFollowStatus(int $user_id, RouteCollection $routes){

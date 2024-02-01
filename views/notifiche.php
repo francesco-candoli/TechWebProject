@@ -1,10 +1,10 @@
 <?php
 
 $titolo = "Notifiche";
-//$notifiche=...;
 
-
-//$notifiche=["Marco ha messo like alla tua recensione", "Giovanni ha commentato una tua recensione"];
+$path=PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER;
+$script="
+<script src='{$path}public/js/index.js'></script>
+<script src='{$path}public/js/notification.js'></script>";
 
 require 'template/base.php';
-?>

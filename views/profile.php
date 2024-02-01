@@ -1,24 +1,13 @@
 <?php
 
 $titolo = "Profilo";
-//$utente["nickname"] = ... ;
-//$utente["foto_profilo"] = ... ;
-//$utente["biografia"] = ... ;
-
-//$recensione = ... ;       
-
-/*TEST PROFILO
-
-$utente["nickname"] = "Marco";
-$utente["foto_profilo"] = "uploaded/foto-profilo.jpg";
-$utente["biografia"] = "Sono un grande critico culinario";
-
-$recensione[0]["foto_profilo"]="uploaded/foto-profilo.jpg";
-$recensione[0]["nickname"]="PIANINI";
-$recensione[0]["immagine"]="uploaded/radial.jpg";
-$recensione[0]["ristorante_recensito"]="";
-$recensione[0]["commenti"][0]="bello";
-$recensione[0]["commenti"][1]="fa cagare";*/
+$path=PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER;
+$script="
+<script src='{$path}public/js/index.js'></script>
+<script src='{$path}public/js/comments.js'></script>
+<script src='{$path}public/js/likes.js'></script>
+<script src='{$path}public/js/profile.js'></script>
+<script src='{$path}public/js/slider.js'></script>";
 
 require 'template/base.php';
 
