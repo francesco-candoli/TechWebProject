@@ -419,6 +419,9 @@
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
     <script src='<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER."public/js/index.js" ?>'></script>
+    <script src='<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER."public/js/comments.js" ?>'></script>
+    <script src='<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER."public/js/likes.js" ?>'></script>
+    <script src='<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER."public/js/slider.js" ?>'></script>
 </body>
 
 </html>
