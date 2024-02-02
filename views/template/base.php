@@ -36,7 +36,7 @@
               <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "profile/" . $_SESSION["username"]; ?>">Profilo</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "notifications"; ?>">Notifiche <?php if(isset($has_notifications)){if($has_notifications){echo "<span style='color:red'>*</span>";}}?></a>
+              <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "notifications"; ?>" <?php if(isset($has_notifications)){if($has_notifications){echo 'style="color:#8A240A"';}}?>>Notifiche <?php if(isset($has_notifications)){if($has_notifications){echo "<span style='color:#8A240A'>*</span>";}}?></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "logout"; ?>">Logout</a>
@@ -49,13 +49,11 @@
               <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "register"; ?>">Registrazione</a>
             </li>
           <?php endif; ?>
-
-          
-          </li>
         </ul>
         <?php if (isset($_SESSION["username"])): ?>
         <div class="d-flex">
-          <input class="me-2" placeholder="Search" id="search_label">
+          <label for="search_label" style="display:none">search</label>
+          <input type="text" class="me-2" placeholder="Search" id="search_label">
           <button class="btn btn-outline-secondary" id="search_button">Search</button>
         </div>
         <?php endif; ?>
@@ -212,8 +210,8 @@
                         else
                           echo "Like"; ?>
                       </button>
-                      <button class="btn btn-outline-primary"
-                        style="display:inline-block" id="<?php echo "comment_btn".$index ?>" data-reviewId="<?php echo $post['review']->getId() ?>">Commenta</button>
+                      <button class="btn btn-outline-primary" style="display:inline-block" id="<?php echo "comment_btn".$index ?>" data-reviewId="<?php echo $post['review']->getId() ?>">Commenta</button>
+                      <label for="<?php echo "comment_label".$index ?>" style="display:none">comment</label>
                       <input type="text" id="<?php echo "comment_label".$index ?>" style="display:inline-block" >
                     </div>
                   </div>

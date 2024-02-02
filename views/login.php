@@ -14,7 +14,7 @@ $form='
                               
         <div class="text-center">
             <button type="submit" class="btn btn-warning text-dark border-black my-2">Login</button>
-            <a href="'.PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.'register" class="text-decoration-none text-black" >Registrazione</button>
+            <a href="'.PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.'register" class="text-decoration-none text-black" >Registrazione</a>
         </div>
     </form>
 </div>';
