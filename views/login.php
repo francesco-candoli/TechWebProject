@@ -1,5 +1,4 @@
 <?php
-
 $form='
 <h2>Login</h2>
 <hr>
@@ -19,4 +18,4 @@ $form='
     </form>
 </div>';
 
-require 'template/form-template.php';
+require 'template/base.php';

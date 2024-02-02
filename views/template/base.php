@@ -1,7 +1,3 @@
-<?php
-
-?>
-
 <!doctype html>
 <html lang="en">
 
@@ -9,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
-    <?php echo $titolo; ?>
+    <?php echo SITE_NAME; ?>
   </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -21,7 +17,7 @@
   <!-- Barra di navigazione-->
   <nav class="navbar navbar-expand-lg sticky-top bg-info">
     <div class="container-fluid">
-      <a class="navbar-brand" href="">Nome Social</a>
+      <a class="navbar-brand" href=""><?php echo SITE_NAME; ?></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -254,17 +250,19 @@
     <?php endif; ?>
 
     <!--Form Recensione-->
-    <?php if (isset($form)): ?>
-      <div class="container col-12 col-sm-6 p-0">
-        <div class="justify-content-sm-center my-1">
-          <div class="border border-black p-4">
-            <p>
-              <?php echo $form; ?>
-            </p>
+    <div class="container">
+      <div class="row justify-content-sm-center">
+        <div class="col-12 col-sm-6">
+          <div class="col6 text-center">
+            <div id="form-container" class="border border-black rounded p-4 bg-info-subtle">
+              
+              <?php echo($form) ?>
+
+            </div>
           </div>
         </div>
       </div>
-    <?php endif; ?>
+    </div>
 
 
   </main>

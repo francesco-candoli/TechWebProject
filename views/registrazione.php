@@ -1,5 +1,4 @@
 <?php
-
 $form='<h2>Registrazione</h2>
     <hr>
     <div class="text-start">
@@ -24,5 +23,5 @@ $form='<h2>Registrazione</h2>
     </form>
 </div>';
 
-require 'template/form-template.php';
+require 'template/base.php';
 ?>
