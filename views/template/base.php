@@ -19,7 +19,7 @@
 <body>
 
   <!-- Barra di navigazione-->
-  <nav class="navbar navbar-expand-lg sticky-top bg-warning">
+  <nav class="navbar navbar-expand-lg sticky-top bg-info">
     <div class="container-fluid">
       <a class="navbar-brand" href="">Nome Social</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -36,7 +36,7 @@
               <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "profile/" . $_SESSION["username"]; ?>">Profilo</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "notifications"; ?>" <?php if(isset($has_notifications)){if($has_notifications){echo 'style="color:#8A240A"';}}?>>Notifiche <?php if(isset($has_notifications)){if($has_notifications){echo "<span style='color:#8A240A'>*</span>";}}?></a>
+              <a class="nav-link <?php if(isset($has_notifications)){if($has_notifications){echo "text-decoration-underline";}}?>" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "notifications"; ?>" <?php if(isset($has_notifications)){if($has_notifications){echo 'style="color:#8A240A"';}}?>>Notifiche</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "logout"; ?>">Logout</a>
@@ -71,13 +71,13 @@
             <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5"  alt="profile image">
             <?php if ($canFollow): ?>
               <hr class="border border-light">
-              <button class="btn btn-warning text-dark border-black" id="change_follow_status_btn" data-profileId="<?php echo $profile->getId();?>"><?php if($follow) echo "Unfollow"; else echo "Follow";?></button>
+              <button class="btn btn-info text-dark border-black" id="change_follow_status_btn" data-profileId="<?php echo $profile->getId();?>"><?php if($follow) echo "Unfollow"; else echo "Follow";?></button>
             <?php endif; ?>
             <?php if ($canPost): ?>
               <hr class="border border-light">
-              <a href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."upload"?>" class="btn btn-warning text-dark border-black">Post</a>
-              <button class="btn btn-warning text-dark border-black" id="change_profile_photo_btn">Cambia foto profilo</button>
-              <div class="my-2 border border-black rounded bg-warning-subtle" id="change_profile_photo_form" style="display:none">
+              <a href="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."upload"?>" class="btn btn-info text-dark border-black">Post</a>
+              <button class="btn btn-info text-dark border-black" id="change_profile_photo_btn">Cambia foto profilo</button>
+              <div class="my-2 border border-black rounded bg-info-subtle" id="change_profile_photo_form" style="display:none">
                 <form action="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER."changeProfileImage" ?>" method="POST" enctype="multipart/form-data" class="my-2" >
                   <label for="profileImage">Nuova foto:</label> <input type="file" name="profileImage" id="profileImage" required><br>
                   <button type="submit" class="btn btn-outline-dark mt-2">Carica</button>

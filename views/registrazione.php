@@ -18,7 +18,7 @@ $form='<h2>Registrazione</h2>
         <input type="number" class="form-control border-black" id="age" name="age" value="18">
 
         <div class="text-center">
-            <button type="submit" class="btn btn-warning text-dark border-black my-2" id="registerButton">Registrami</button>
+            <button type="submit" class="btn btn-info text-dark border-black my-2" id="registerButton">Registrami</button>
             <a href="'.PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.'login" class="text-decoration-none text-black">Login</a>
         </div>
     </form>
