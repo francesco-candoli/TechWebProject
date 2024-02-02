@@ -40,7 +40,7 @@ class ReviewService extends DatabaseService
       return null;
     }
 
-    return new Review($review["id"], $review["content"], $review["vote"], $review["restaurant_id"], $review["publisher_id"]);
+    return new Review($review["id"], $review["content"], $review["vote"], $review["restaurant_id"], $review["publisher_id"], $review["date"]);
 
   }
 
@@ -57,7 +57,7 @@ class ReviewService extends DatabaseService
 
     $counter=0;
     while($review = $stmt->fetch()){
-      $reviews[$counter]=new Review($review["id"], $review["content"], $review["vote"], $review["restaurant_id"], $review["publisher_id"]);
+      $reviews[$counter]=new Review($review["id"], $review["content"], $review["vote"], $review["restaurant_id"], $review["publisher_id"], $review["date"]);
       $counter++;
     }
 
@@ -66,7 +66,7 @@ class ReviewService extends DatabaseService
 
   private function insertReview(Review $review)
   {
-    $stmt = $this->connection->prepare("INSERT INTO review (content, vote, restaurant_id, publisher_id) VALUES (?,?,?,?);")->execute([$review->getContent(), $review->getVote(), $review->getRestaurantId(), $review->getPublisherId()]);
+    $stmt = $this->connection->prepare("INSERT INTO review (content, vote, restaurant_id, publisher_id, date) VALUES (?,?,?,?,CURDATE());")->execute([$review->getContent(), $review->getVote(), $review->getRestaurantId(), $review->getPublisherId()]);
   }
 
   private function updateReview(Review $review)
@@ -93,8 +93,10 @@ class ReviewService extends DatabaseService
 
     $comments=$this->findCommentsFromReview($review);
 
-    foreach($comments as $comment){
-      $comment->setContent($this->userService->findUserById($comment->getPublisherId())->getUsername().": ".$comment->getContent());
+    if($comments !=  null){
+      foreach($comments as $comment){
+        $comment->setContent($this->userService->findUserById($comment->getPublisherId())->getUsername().": ".$comment->getContent());
+      }
     }
 
     $data=[
@@ -118,7 +120,7 @@ class ReviewService extends DatabaseService
     $i=0;
     $review=[];
     while($row = $stmt->fetch()) {
-      $review[$i] = new Review($row["id"], $row["content"], $row["vote"], $row["restaurant_id"], $row["publisher_id"]);
+      $review[$i] = new Review($row["id"], $row["content"], $row["vote"], $row["restaurant_id"], $row["publisher_id"], $row["date"]);
       $i++;
     }
     return $review;

@@ -58,7 +58,7 @@ class ReviewController extends Controller
                 $this->restaurantService->save($res);
             }
 
-            $this->reviewService->save(new Review(-1, $_POST["content"], $_POST["vote"], $this->restaurantService->findRestaurantByName($_POST["restaurant_name"])->getId(), $_SESSION["user_id"]));
+            $this->reviewService->save(new Review(-1, $_POST["content"], $_POST["vote"], $this->restaurantService->findRestaurantByName($_POST["restaurant_name"])->getId(), $_SESSION["user_id"], "date"));
 
             http_response_code(200);
             return "ok";

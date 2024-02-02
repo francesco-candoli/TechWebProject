@@ -23,7 +23,7 @@ function deleteNotification(id) {
       if (xhr.status != 200) { // analizza lo status HTTP della risposta
         alert(`Error ${xhr.status}: ${xhr.statusText}`); // ad esempio 404: Not Found
       } else { // mostra il risultato
-        alert(`Done, ${xhr.response}`); // response contiene la risposta del server
+        //alert(`Done, ${xhr.response}`); // response contiene la risposta del server
       }
     };
     xhr.onerror = function () {

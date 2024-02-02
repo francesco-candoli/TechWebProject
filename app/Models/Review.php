@@ -8,13 +8,15 @@ class Review{
     private int $vote;
     private int $restaurant_id;
     private int $publisher_id;
+    private string $date;
 
-    function __construct(int $id, string $content, int $vote, int $restaurant_id, int $publisher_id){
+    function __construct(int $id, string $content, int $vote, int $restaurant_id, int $publisher_id, string $date){
         $this->id=$id;
         $this->content=$content;
         $this->vote=$vote;
         $this->restaurant_id=$restaurant_id;
         $this->publisher_id=$publisher_id;
+        $this->date=$date;
     }
 
     public function getId(){
@@ -41,6 +43,10 @@ class Review{
         return $this->restaurant_id;
     }
 
+    public function getDate(){
+        return $this->date;
+    }
+
     public function setRestaurantId(int $restaurant_id){
         $this->restaurant_id= $restaurant_id;
     }
@@ -51,5 +57,9 @@ class Review{
 
     public function setPublisherId(int $publisher_id){
         $this->publisher_id= $publisher_id;
+    }
+
+    public function setDate(int $date){
+        $this->date= $date;
     }
 }

@@ -64,7 +64,7 @@ class UploadController extends Controller
             }
         }
         if(count($photos)!=0){
-            $lastId=$this->reviewService->save(new Review(-1, $_POST["content"], $_POST["vote"], $restaurant->getId(), $_SESSION["user_id"]));
+            $lastId=$this->reviewService->save(new Review(-1, $_POST["content"], $_POST["vote"], $restaurant->getId(), $_SESSION["user_id"], "date"));
             foreach($photos as $src){
                 $this->photoService->save(new Photo(-1, $src, "standard-alt",$lastId));
             }

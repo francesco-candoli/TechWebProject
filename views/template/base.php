@@ -31,30 +31,34 @@
           <li class="nav-item">
             <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER; ?>">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link"
-              href="<?php if (isset($_SESSION["username"])) {
-                echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "profile/" . $_SESSION["username"];
-              } else {
-                echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "login";
-              } ?>">Profilo</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link"
-              href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "notifications"; ?>">Notifiche <?php if(isset($has_notifications)){if($has_notifications){echo "<span style='color:red'>*</span>";}}?></a>
-          </li>
-          <li class="nav-item">
-            <?php if (isset($_SESSION["username"])): ?>
+          <?php if (isset($_SESSION["username"])): ?>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "profile/" . $_SESSION["username"]; ?>">Profilo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "notifications"; ?>">Notifiche <?php if(isset($has_notifications)){if($has_notifications){echo "<span style='color:red'>*</span>";}}?></a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "logout"; ?>">Logout</a>
-            <?php else: ?>
+            </li>
+          <?php else:?>
+            <li class="nav-item">
               <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "login"; ?>">Login</a>
-            <?php endif; ?>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "register"; ?>">Registrazione</a>
+            </li>
+          <?php endif; ?>
+
+          
           </li>
         </ul>
+        <?php if (isset($_SESSION["username"])): ?>
         <div class="d-flex">
           <input class="me-2" placeholder="Search" id="search_label">
           <button class="btn btn-outline-secondary" id="search_button">Search</button>
         </div>
+        <?php endif; ?>
       </div>
     </div>
   </nav>
@@ -214,6 +218,11 @@
                     </div>
                   </div>
                 <?php endif; ?>
+
+                <!--Data-->
+                <div>
+                  <p class="text-end mx-2"><?php echo $post["review"]->getDate() ?></p>
+                </div>
 
               </div>
             </div>

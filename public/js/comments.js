@@ -29,8 +29,6 @@ if(comment_btns!=null){
 
 
 function addComment(review_id, content){
-  alert(review_id + " " + content);
-  
   // 1. Crea un nuovo oggetto XMLHttpRequest
   let xhr = new XMLHttpRequest();
   // 2. Lo configura: richiesta GET per l'URL /article/.../load

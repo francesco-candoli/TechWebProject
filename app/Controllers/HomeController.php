@@ -45,6 +45,16 @@ class HomeController extends Controller
 						$counter++;
 					}
 				}
+
+				usort($recensioni, function($a, $b) {
+					if ($a["review"]->getDate()> $b["review"]->getDate()) {
+						return -1;
+					} elseif ($a["review"]->getDate() < $b["review"]->getDate()) {
+						return 1;
+					}
+					return 0;
+				});
+				
 			}else{
 				$reviews = $this->reviewService->findLastRecent(2);
 	
