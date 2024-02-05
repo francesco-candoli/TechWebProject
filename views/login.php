@@ -13,7 +13,7 @@ $form='
                               
         <div class="text-center">
             <button type="submit" class="btn btn-info text-dark border-black my-2">Login</button>
-            <a href="'.PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.'register" class="text-decoration-none text-black" >Registrazione</a>
+            <a href="'.PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.'register" class="text-decoration-none text-black">Registrazione</a>
         </div>
     </form>
 </div>';

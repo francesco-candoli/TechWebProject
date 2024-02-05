@@ -1,6 +1,6 @@
 <?php
 //site name
-define('SITE_NAME', 'your-site-name');
+define('SITE_NAME', 'URBAN FORK');
 
 define('PROTOCOL', 'http://');
 define('SERVER', 'localhost');
