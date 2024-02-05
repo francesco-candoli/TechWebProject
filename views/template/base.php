@@ -115,7 +115,7 @@
                 <img src="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . $post["publisher"]->getProfileImageSrc(); ?>"
                   class="rounded-circle col-2" alt="profile image">
                 <a href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "profile/" . $post["publisher"]->getUsername(); ?>"
-                  class="text-decoration-none text-dark">
+                  class="text-decoration-none text-dark fs-5">
                   <?php echo $post["publisher"]->getUsername(); ?>
                 </a>
               </div>

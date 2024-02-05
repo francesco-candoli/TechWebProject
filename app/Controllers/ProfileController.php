@@ -54,15 +54,17 @@ class ProfileController extends Controller
 				$numberOfFollower = $this->userService->countFollowersById($profile->getID());
 				$numberOfFollowing = $this->userService->countFollowingById($profile->getID());
 				$reviews = $this->reviewService->findByPublisher($profile);
+				if($reviews!=null){
+					usort($reviews, function($a, $b) {
+						if ($a->getDate()> $b->getDate()) {
+							return -1;
+						} elseif ($a->getDate() < $b->getDate()) {
+							return 1;
+						}
+						return 0;
+					});
+				}
 				
-				usort($reviews, function($a, $b) {
-					if ($a->getDate()> $b->getDate()) {
-						return -1;
-					} elseif ($a->getDate() < $b->getDate()) {
-						return 1;
-					}
-					return 0;
-				});
 
 				if($reviews != null){
 					foreach($reviews as $review){

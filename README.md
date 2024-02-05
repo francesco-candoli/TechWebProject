@@ -8,8 +8,6 @@ Composer
 Symfony
 Server Apache (Pacchetto XAMPP)
 HTML
-Css
-Scss
 Bootstrap
 JQuery
 JavaScript
@@ -19,14 +17,18 @@ PHP >=7.1.20
 Composer
 
 ## Configurations
-Edita i parametri di ocnfigurazione in config/config.php
-In db/ ci sarà uno script sql per l'import del db già poplato con dati di test
+Edita i parametri di configurazione in config/config.php
+In db/ ci saranno 3 script da eseguire all'interno dei un db nominato 'ristoranti',
+e sono da eseguire nel seguente ordine:
+    1- ristoranti.sql
+    2- inserimenti.sql
+    3- trigger.sql
 
 ## Informazioni per il login
--username: test_user
--pasw: 6ZaxN2Vzm9NUJT2y
+-username: checco_candoli
+-pasw: Password_1234
 
 -username: marchito92
--pasw: 6ZaxN2Vzm9NUJT2y
+-pasw: Password_1234
 
 

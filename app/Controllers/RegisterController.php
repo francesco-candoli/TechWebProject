@@ -24,7 +24,7 @@ class RegisterController extends Controller
 	public function register(RouteCollection $routes)
 	{
         $random_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
-        $user= new User(-1, $_POST["username"], $_POST["password"], "", $_POST["age"], $_POST["sex"], $random_salt);
+        $user= new User(-1, $_POST["username"], $_POST["password"],  PROFILE_IMAGE_PATH.DEFAULT_PROFILE_IMAGE, $_POST["age"], $_POST["sex"],$random_salt);
         $user->setPassword($_POST["password"]);
         $this->userService->save($user);
         if(isset($_SESSION["register_error"])){

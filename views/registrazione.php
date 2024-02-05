@@ -15,13 +15,14 @@ $form='<h2>Registrazione</h2>
                   
         <label class="form-label mt-2 mb-0" for="sex">Sesso:</label>
         <select class="form-select border-black" id="sex" name="sex" required>
+            <option value="" hidden selected></option>
             <option value="Maschio">Maschio</option>
             <option value="Femmina">Femmina</option>
             <option value="Altro">Altro</option>
         </select>
 
         <label for="age" class="form-label mt-2 mb-0">Age</label>
-        <input type="number" class="form-control border-black" id="age" name="age" value="16">
+        <input type="number" class="form-control border-black" id="age" name="age">
 
         <div class="text-center">
             <button type="submit" class="btn btn-info text-dark border-black my-2" id="registerButton">Registrami</button>

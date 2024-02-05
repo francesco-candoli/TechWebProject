@@ -10,7 +10,7 @@ define('URL_SUBFOLDER', 'ristoranti/TechWebProject/');
 define('REVIEW_IMAGE_PATH','public/images/review/');
 define('PROFILE_IMAGE_PATH','public/images/profile/');
 
-define('DEFAULT_PROFILE_IMAGE','1.jpg');
+define('DEFAULT_PROFILE_IMAGE','default.jpg');
 
 
 //DB Params
