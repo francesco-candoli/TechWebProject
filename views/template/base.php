@@ -250,19 +250,21 @@
     <?php endif; ?>
 
     <!--Form Recensione-->
-    <div class="container">
-      <div class="row justify-content-sm-center">
-        <div class="col-12 col-sm-6">
-          <div class="col6 text-center">
-            <div id="form-container" class="border border-black rounded p-4 bg-info-subtle">
-              
-              <?php echo($form) ?>
+    <?php if (isset($form)): ?>
+      <div class="container">
+        <div class="row justify-content-sm-center">
+          <div class="col-12 col-sm-6">
+            <div class="col6 text-center">
+              <div id="form-container" class="border border-black rounded p-4 bg-info-subtle">
+                
+                <?php echo($form) ?>
 
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    <?php endif; ?>  
 
 
   </main>
