@@ -64,7 +64,7 @@
         <div class="text-center">
           <?php if (isset($profile)): ?>
             <h1 class="align-middle">@<?php echo $profile->getUsername(); ?></h1>
-            <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5"  alt="profile image">
+            <img src="<?php echo PROTOCOL.SERVER.URL_ROOT.URL_SUBFOLDER.$profile->getProfileImageSrc(); ?>" class="rounded-circle col-5 border border-3 border-black"  alt="profile image">
             <?php if ($canFollow): ?>
               <hr class="border border-light">
               <button class="btn btn-info text-dark border-black" id="change_follow_status_btn" data-profileId="<?php echo $profile->getId();?>"><?php if($follow) echo "Unfollow"; else echo "Follow";?></button>
@@ -113,7 +113,7 @@
               <!--header-->
               <div class="card-header">
                 <img src="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . $post["publisher"]->getProfileImageSrc(); ?>"
-                  class="rounded-circle col-2" alt="profile image">
+                  class="rounded-circle col-2 border border-1 border-black" alt="profile image">
                 <a href="<?php echo PROTOCOL . SERVER . URL_ROOT . URL_SUBFOLDER . "profile/" . $post["publisher"]->getUsername(); ?>"
                   class="text-decoration-none text-dark fs-5">
                   <?php echo $post["publisher"]->getUsername(); ?>
